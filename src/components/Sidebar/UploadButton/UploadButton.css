@@ -1,0 +1,19 @@
+input[type="file"] {
+  display: none;
+}
+
+.upload-area {
+  margin-top: auto;
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+.custom-upload {
+  display: block;
+  background-color: var(--uploadColor);
+  text-align: center;
+  padding: 10px 0px 10px 0px;
+  border-radius: 15px 15px 0px 0px;
+  width: 100%;
+  margin: 0;
+}

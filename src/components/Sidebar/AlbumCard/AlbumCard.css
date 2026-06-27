@@ -1,0 +1,74 @@
+.album-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.album-head {
+  display: flex;
+  flex-direction: row;
+  margin: 10px 0px 10px 0px;
+}
+
+.album-card img {
+  border-radius: 10px;
+  max-width: 100px;
+  max-height: 100px;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0 0 0 10px;
+  align-self: center;
+  overflow-x: scroll;
+
+  /* Edge, Firefox, Internet Explorer... */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Chrome Safari Opera */
+.card-info::-webkit-scrollbar {
+  display: none;
+}
+
+.card-title {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 20px;
+  white-space: nowrap;
+}
+
+.album-foot-song {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  padding: 5px 5px;
+}
+
+.album-foot-song > span:first-child {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums lining-nums; /* Source - https://stackoverflow.com/a/47362358 */
+}
+
+.album-foot-song > span:nth-child(2) {
+  font-size: medium;
+  transition: font-weight 0.2s ease;
+  transition: font-size 0.2s ease;
+  overflow-x: hidden;
+}
+
+.album-foot-song > span:nth-child(2):hover {
+  font-size: large;
+  font-weight: bold;
+}
+
+.album-foot-song > span:last-child {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums lining-nums; /* Source - https://stackoverflow.com/a/47362358 */
+}
+
+.song-selected {
+  color: var(--selectColor, #ff746c);
+}

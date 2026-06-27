@@ -1,0 +1,9 @@
+.time-controls {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.time-controls input[type="range"] {
+  width: 500px;
+}

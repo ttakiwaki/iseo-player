@@ -1,0 +1,33 @@
+.player-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 140px;
+  gap: 15px;
+}
+
+.player-display img {
+  border-radius: 15px;
+  width: 400px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  max-width: 100%;
+  height: auto;
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.player-title {
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.player-artist {
+  font-size: 20px;
+}

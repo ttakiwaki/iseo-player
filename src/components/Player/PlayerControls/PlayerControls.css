@@ -1,0 +1,11 @@
+.player-controls {
+  padding-top: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.button-selected {
+  color: var(--selectColor, #ff746c);
+}

@@ -1,0 +1,13 @@
+.albumshelf {
+  flex: 1;
+  overflow-y: auto;
+
+  /* Edge, Firefox, Internet Explorer... */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Chrome Safari Opera */
+.albumshelf::-webkit-scrollbar {
+  display: none;
+}

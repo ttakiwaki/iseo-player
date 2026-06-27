@@ -1,0 +1,70 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#app {
+  font-family: Inter, "Noto Sans JP", "Noto Sans KR", system-ui, sans-serif;
+  color: var(--fontColor);
+  margin: 0;
+  height: 100vh;
+  background-color: var(--playerSide);
+
+  display: grid;
+  grid-template-columns: var(--libWidth, 20%) 1fr;
+}
+
+:root {
+  --libSide: #ffffff;
+  --playerSide: #f5f5f5;
+  --fontColor: #000000;
+  --lucideIcon: #000000;
+  --btnColor: #ebebeb;
+  --btnColorClick: #767676;
+  --btnOutline: #ffffff;
+  --uploadColor: #d9d9d9;
+}
+
+:root.dark {
+  --libSide: #1f1f1f;
+  --playerSide: #1a1a1a;
+  --fontColor: #f2f0ef;
+  --lucideIcon: #f2f0ef;
+  --btnColor: #171717;
+  --btnOutline: #3b3b3b;
+  --uploadColor: #161616;
+}
+
+button {
+  background-color: var(--btnColor);
+  border: 2px solid var(--btnOutline);
+  border-radius: 20px;
+  padding: 4px;
+}
+
+.button-icon {
+  width: 35px;
+  stroke-width: 2;
+  color: var(--lucideIcon);
+}
+
+.button-iconsm {
+  width: 25px;
+  height: 15px;
+  stroke-width: 2;
+  transition: stroke-width 0.2s ease;
+  color: var(--lucideIcon);
+}
+
+button:hover .button-icon {
+  stroke-width: 2.5 !important;
+}
+
+button:hover .button-iconsm {
+  stroke-width: 3 !important;
+}
