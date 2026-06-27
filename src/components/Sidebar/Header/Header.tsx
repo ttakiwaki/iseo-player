@@ -1,4 +1,6 @@
 import "./Header.css";
+import iconlight from "../../../assets/icons/icon-light.svg";
+import icondark from "../../../assets/icons/icon-dark.svg";
 
 interface HeaderProps {
   isDark: boolean;
@@ -25,11 +27,7 @@ function Header({ isDark }: HeaderProps) {
             window.alert("Input in integers only!");
           }
         }}
-        src={
-          isDark
-            ? "src/assets/icons/icon-dark.svg"
-            : "src/assets/icons/icon-light.svg"
-        }
+        src={isDark ? icondark : iconlight}
         alt="iseo logo"
         className="icon"
       />
