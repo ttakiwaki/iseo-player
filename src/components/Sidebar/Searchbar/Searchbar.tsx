@@ -1,4 +1,3 @@
-import type { Album } from "../../../types";
 import "./Searchbar.css";
 
 interface SearchbarProps {
