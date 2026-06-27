@@ -35,7 +35,7 @@ Free tools like [MusicBrainz Picard](https://picard.musicbrainz.org/) or [Mp3tag
 
 ## Live Demo
 
-Available on Vercel:
+Available on Vercel: [iseo-player.vercel.app](https://iseo-player.vercel.app)
 
 ---
 
