@@ -8,7 +8,7 @@ A clean, client-side music player that runs entirely in the browser.
 
 ISEO lets you load your local music files and play them directly in the browser. Everything runs client-side!
 
-**Rinascita (v2) includes:**
+**Aria (v3) includes:**
 
 - Single file and multi-folder upload with automatic album detection
 - ID3 metadata parsing (title, artist, track number, duration)
@@ -16,6 +16,10 @@ ISEO lets you load your local music files and play them directly in the browser.
 - Play / pause, skip forward / back, shuffle, and loop
 - Seekbar and volume controls
 - Search / filter albums
+
+**New Feature: Lyrics**
+
+Using the LRCLIB API, Synced and plain lyrics fetched from the LRCLIB database, displayed in the lyrics view
 
 ## For the best experience
 
@@ -45,10 +49,10 @@ Available on Vercel: [iseo-player.vercel.app](https://iseo-player.vercel.app)
 | ------- | --------- | ----------- | ---------------------------------- |
 | v1      | Overture  | ✅ Released | Single-track engine, album builder |
 | v2      | Rinascita | ✅ Released | React/TSX rewrite, ID3 metadata    |
-| v3      | Aria      | Planned     | Lyrics support via LRCLib          |
+| v3      | Aria      | 🚧 Active   | Lyrics support via LRCLIB          |
 | v4      | Cadenza   | Planned     | Full feature expansion             |
 
-**Overture (v1)** is preserved at [iseo-legacy](https://github.com/ttakiwaki/iseo-legacy). Future updates will start using this repository.
+**Overture (v1)** is preserved at [iseo-legacy](https://github.com/ttakiwaki/iseo-legacy). All future development continues on this current repository.
 
 ---
 
@@ -57,6 +61,8 @@ Available on Vercel: [iseo-player.vercel.app](https://iseo-player.vercel.app)
 **Overture (v1):** Vanilla HTML, CSS, JavaScript
 
 **Rinascita (v2):** React, TypeScript, Vite, music-metadata
+
+**Aria (v3):** React, TypeScript, Vite, music-metadata, LRCLIB
 
 ---
 
