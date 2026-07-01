@@ -43,7 +43,7 @@ function App() {
         ],
       });
     }
-  }, [currentTrack, currentAlbum]);
+  }, [currentTrack, currentAlbum, audioRef.current?.src]);
 
   useEffect(() => {
     if (audioRef.current) {

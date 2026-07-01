@@ -55,12 +55,16 @@ function PlayerControls({
     }
   }
 
+  let currentURL: string = "";
+  const previousAlbum = useRef<number | undefined>(undefined);
+
   function shuffleSong() {
     if (currentAlbum === null || currentTrack === null) return;
     if (!shuffling) {
       setShuffling(true);
       originalTracks.current = [...albumsArray[currentAlbum].tracks];
       let shuffledTracks = albumsArray[currentAlbum].tracks;
+      previousAlbum.current = currentAlbum;
       for (let i = shuffledTracks.length - 1; i > 0; i--) {
         const nextTrack = Math.floor(Math.random() * (i + 1));
         [shuffledTracks[i], shuffledTracks[nextTrack]] = [
@@ -72,10 +76,13 @@ function PlayerControls({
       updatedAlbums[currentAlbum].tracks = shuffledTracks;
       setAlbumsArray(updatedAlbums);
       setTrack(0);
-      audioRef.current?.play();
+      if (audioRef.current) {
+        audioRef.current.src = shuffledTracks[0].url;
+        audioRef.current.play();
+      }
     } else {
       setShuffling(false);
-      const currentURL = albumsArray[currentAlbum].tracks[currentTrack].url;
+      currentURL = albumsArray[currentAlbum].tracks[currentTrack].url;
       const updatedAlbums = [...albumsArray];
       updatedAlbums[currentAlbum].tracks = originalTracks.current;
       setAlbumsArray(updatedAlbums);
@@ -84,6 +91,21 @@ function PlayerControls({
       );
     }
   }
+  useEffect(() => {
+    if (
+      shuffling &&
+      currentAlbum &&
+      currentTrack &&
+      previousAlbum.current !== undefined
+    ) {
+      setShuffling(false);
+      currentURL = albumsArray[currentAlbum].tracks[currentTrack].url;
+      const updatedAlbums = [...albumsArray];
+      updatedAlbums[previousAlbum.current].tracks = originalTracks.current;
+      setAlbumsArray(updatedAlbums);
+    }
+  }, [currentAlbum]);
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === " ") {
