@@ -1,5 +1,6 @@
 import "./AlbumCard.css";
-import icon from "../../../assets/icons/icon-light.svg";
+import iconlight from "../../../assets/icons/icon-light.svg";
+import icondark from "../../../assets/icons/icon-dark.svg";
 import { useState } from "react";
 import type { Album } from "../../../types";
 
@@ -9,6 +10,7 @@ interface AlbumCardProps extends Album {
   setTrack: (value: number | null) => void;
   setAlbum: (value: number | null) => void;
   albumIndex: number;
+  isDark: boolean;
 }
 
 function AlbumCard({
@@ -21,6 +23,7 @@ function AlbumCard({
   setTrack,
   setAlbum,
   albumIndex,
+  isDark,
 }: AlbumCardProps) {
   const [open, setOpen] = useState(false);
 
@@ -34,13 +37,19 @@ function AlbumCard({
     return `${String(m)}:${String(s).padStart(2, "0")}`;
   }
 
+  const artists = tracks.map((track) => track.artist);
+  const uniqueArtists = new Set(artists);
+
   return (
     <div className="album-card" onClick={handleClick}>
       <div className="album-head">
-        <img src={cover ?? icon} alt="cover" />
+        <img src={cover ?? (isDark ? icondark : iconlight)} alt="cover" />
         <div className="card-info">
           <p className="card-title">{title}</p>
-          <p className="card-artist">{artist}</p>
+          <p className="card-artist">
+            {tracks[0]?.albumArtist ??
+              (uniqueArtists.size > 3 ? "Various Artists" : artist)}
+          </p>
         </div>
       </div>
       <div className="album-foot">
@@ -62,7 +71,9 @@ function AlbumCard({
               >
                 <div className="album-foot-song">
                   <span>{track.trackNumber ?? index + 1}</span>
-                  <span>{track.title.replace(/\.[^/.]+$/, "")}</span>
+                  <span>
+                    {track.title.replace(/\.(mp3|flac|wav|aac|ogg|m4a)$/i, "")}
+                  </span>
                   <span>
                     {track.metaDuration ? formatTime(track.metaDuration) : ""}
                   </span>

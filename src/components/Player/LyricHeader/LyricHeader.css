@@ -1,0 +1,52 @@
+.lyricheader {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  width: 100%;
+}
+
+.lyricheader-left {
+  margin-top: 15px;
+  padding-left: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.lyricheader-left img {
+  border-radius: 10px;
+  width: 75px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  max-width: 100%;
+  height: auto;
+}
+
+.lyricheader-info {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.lyricheader-info > :first-child {
+  font-weight: bold;
+}
+
+.lyric-sync {
+  justify-self: center;
+  align-self: center;
+}
+
+.lyric-sync button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 5px 10px 5px 10px;
+}
+
+.lyric-sync span {
+  font-size: 23px;
+  align-self: center;
+}

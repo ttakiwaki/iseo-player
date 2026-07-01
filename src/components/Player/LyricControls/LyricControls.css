@@ -1,8 +1,8 @@
-.player-controls {
-  padding-top: 15px;
+.lyriccontrols {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-self: center;
   align-items: center;
   gap: 5px;
+  margin-bottom: 30px;
 }

@@ -2,8 +2,11 @@ export interface Track {
   title: string;
   url: string;
   artist?: string;
+  album?: string;
   trackNumber?: number;
   metaDuration?: number;
+  cover?: string | undefined;
+  albumArtist?: string | undefined;
 }
 
 export interface Album {

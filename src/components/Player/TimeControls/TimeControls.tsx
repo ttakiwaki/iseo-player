@@ -3,6 +3,8 @@ import "./TimeControls.css";
 
 interface TimeControlsProps {
   audioRef: React.RefObject<HTMLAudioElement | null>;
+  currentTime: number;
+  setCurrentTime: (value: number) => void;
 }
 
 function formatTime(seconds: number) {
@@ -11,22 +13,18 @@ function formatTime(seconds: number) {
   return `${String(m)}:${String(s).padStart(2, "0")}`;
 }
 
-function TimeControls({ audioRef }: TimeControlsProps) {
-  const [currentTime, setCurrentTime] = useState(0);
+function TimeControls({ audioRef, currentTime }: TimeControlsProps) {
   const [duration, setDuration] = useState(0);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
-
-    const updateTime = () => setCurrentTime(audio.currentTime);
     const updateDuration = () => setDuration(audio.duration);
-
-    audio.addEventListener("timeupdate", updateTime);
     audio.addEventListener("loadedmetadata", updateDuration);
 
+    if (audio.duration) setDuration(audio.duration);
+
     return () => {
-      audio.removeEventListener("timeupdate", updateTime);
       audio.removeEventListener("loadedmetadata", updateDuration);
     };
   }, [audioRef]);
@@ -42,11 +40,8 @@ function TimeControls({ audioRef }: TimeControlsProps) {
         defaultValue="0"
         value={currentTime}
         onChange={(e) => {
-          const newTime = Number(e.target.value);
-          setCurrentTime(newTime);
-          if (audioRef.current) {
-            audioRef.current.currentTime = newTime;
-          }
+          if (audioRef.current)
+            audioRef.current.currentTime = Number(e.target.value);
         }}
       />
       <p>{formatTime(duration)}</p>

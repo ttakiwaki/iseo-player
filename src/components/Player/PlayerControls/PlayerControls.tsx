@@ -84,14 +84,22 @@ function PlayerControls({
       );
     }
   }
-
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    audio.addEventListener("ended", nextSong);
-    return () => audio.removeEventListener("ended", nextSong);
-  }, [audioRef, currentAlbum, currentTrack]);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === " ") {
+        event.preventDefault();
+        if (playing) {
+          audioRef.current?.pause();
+          setPlaying(false);
+        } else {
+          audioRef.current?.play();
+          setPlaying(true);
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [playing]);
 
   return (
     /* JSX */

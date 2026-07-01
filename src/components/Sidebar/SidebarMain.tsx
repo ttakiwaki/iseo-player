@@ -41,6 +41,7 @@ function SidebarMain({
         setTrack={setTrack}
         setAlbum={setAlbum}
         filteredAlbums={filteredAlbums}
+        isDark={isDark}
       ></AlbumShelf>
       <Upload
         albumsArray={albumsArray}

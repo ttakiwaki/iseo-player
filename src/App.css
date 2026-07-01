@@ -68,3 +68,7 @@ button:hover .button-icon {
 button:hover .button-iconsm {
   stroke-width: 3 !important;
 }
+
+.button-selected {
+  color: var(--selectColor, #ff746c);
+}

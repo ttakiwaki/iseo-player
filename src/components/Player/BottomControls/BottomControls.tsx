@@ -1,14 +1,22 @@
 import "./BottomControls.css";
-import { Volume2, Palette, MoonStar, Sun } from "lucide-react";
+import { Volume2, Palette, MicVocal, MoonStar, Sun } from "lucide-react";
 import { useState } from "react";
 
 interface VolumeScrubberProps {
   audioRef: React.RefObject<HTMLAudioElement | null>;
   isDark: boolean;
   setDark: (value: boolean) => void;
+  setLyricsOpen: (value: boolean) => void;
+  lyricsOpen: boolean;
 }
 
-function BottomControls({ audioRef, isDark, setDark }: VolumeScrubberProps) {
+function BottomControls({
+  audioRef,
+  isDark,
+  setDark,
+  setLyricsOpen,
+  lyricsOpen,
+}: VolumeScrubberProps) {
   const [volOpen, setVolOpen] = useState(true);
 
   return (
@@ -41,6 +49,14 @@ function BottomControls({ audioRef, isDark, setDark }: VolumeScrubberProps) {
         }}
       >
         <Palette className="button-iconsm"></Palette>
+      </button>
+
+      <button
+        onClick={() => {
+          setLyricsOpen(!lyricsOpen);
+        }}
+      >
+        <MicVocal className="button-iconsm"></MicVocal>
       </button>
 
       <button

@@ -33,15 +33,27 @@ function Upload({ albumsArray, setAlbumsArray }: UploadProps) {
         if (file.type.startsWith("audio/")) {
           let title = file.name;
           let artist = "Unknown Artist";
+          let album = "Unknown Album";
           let trackNumber = undefined;
           let metaDuration = undefined;
+          let cover = undefined;
+          let albumArtist = undefined;
 
           try {
             const metadata = await parseBlob(file);
             title = metadata.common.title ?? file.name;
             artist = metadata.common.artist ?? "Unknown Artist";
+            album = metadata.common.album ?? "Unknown Album";
             trackNumber = metadata.common.track.no ?? undefined;
             metaDuration = metadata.format.duration ?? undefined;
+            albumArtist = metadata.common.albumartist ?? undefined;
+            const pictures = metadata.common.picture;
+            if (pictures && pictures.length > 0) {
+              const blob = new Blob([pictures[0].data as unknown as BlobPart], {
+                type: pictures[0].format,
+              });
+              cover = URL.createObjectURL(blob);
+            }
           } catch (error) {
             console.error(error);
           }
@@ -51,8 +63,11 @@ function Upload({ albumsArray, setAlbumsArray }: UploadProps) {
             title,
             url: URL.createObjectURL(file),
             artist,
+            album,
             trackNumber,
             metaDuration,
+            albumArtist,
+            cover,
           });
         } else if (file.type.startsWith("image/")) {
           albumShipping[albumName].cover = URL.createObjectURL(file);
@@ -72,15 +87,27 @@ function Upload({ albumsArray, setAlbumsArray }: UploadProps) {
         if (file.type.startsWith("audio/")) {
           let title = file.name;
           let artist = "Unknown Artist";
+          let album = "Unknown Album";
           let trackNumber = undefined;
           let metaDuration = undefined;
+          let cover = undefined;
+          let albumArtist = undefined;
 
           try {
             const metadata = await parseBlob(file);
             title = metadata.common.title ?? file.name;
             artist = metadata.common.artist ?? "Unknown Artist";
+            album = metadata.common.album ?? "Unknown Album";
             trackNumber = metadata.common.track.no ?? undefined;
             metaDuration = metadata.format.duration ?? undefined;
+            albumArtist = metadata.common.albumartist ?? undefined;
+            const pictures = metadata.common.picture;
+            if (pictures && pictures.length > 0) {
+              const blob = new Blob([pictures[0].data as unknown as BlobPart], {
+                type: pictures[0].format,
+              });
+              cover = URL.createObjectURL(blob);
+            }
           } catch (error) {
             console.error(error);
           }
@@ -90,8 +117,11 @@ function Upload({ albumsArray, setAlbumsArray }: UploadProps) {
             title,
             url: URL.createObjectURL(file),
             artist,
+            album,
             trackNumber,
             metaDuration,
+            cover,
+            albumArtist,
           });
         } else if (file.type.startsWith("image/")) {
           albumShipping[albumName].cover = URL.createObjectURL(file);

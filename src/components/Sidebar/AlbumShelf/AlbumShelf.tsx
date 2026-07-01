@@ -8,6 +8,7 @@ interface AlbumShelfProps {
   setTrack: (value: number | null) => void;
   setAlbum: (value: number | null) => void;
   filteredAlbums: Album[];
+  isDark: boolean;
 }
 
 function AlbumShelf({
@@ -16,6 +17,7 @@ function AlbumShelf({
   setTrack,
   setAlbum,
   filteredAlbums,
+  isDark,
 }: AlbumShelfProps) {
   return (
     <div className="albumshelf">
@@ -28,6 +30,7 @@ function AlbumShelf({
           albumIndex={index}
           currentTrack={currentTrack}
           currentAlbum={currentAlbum}
+          isDark={isDark}
         ></AlbumCard>
       ))}
     </div>
