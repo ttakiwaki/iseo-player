@@ -12,6 +12,7 @@
   color: white;
   background-color: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(8px);
+  overflow-y: auto;
 }
 
 .settings-content {
@@ -92,4 +93,8 @@
   display: flex;
   flex-direction: row;
   gap: 20px;
+}
+
+.aaa {
+  border: 1px red solid;
 }

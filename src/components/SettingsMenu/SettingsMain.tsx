@@ -1,4 +1,5 @@
 import Apperance from "./Apperance/Appearance";
+import Personalize from "./Personalize/Personalize";
 import SettingsHeader from "./SettingsHeader/SettingsHeader";
 import "./SettingsMain.css";
 
@@ -9,6 +10,7 @@ interface SettingsMainProps {
   setVibranceEnabled: (value: boolean) => void;
   isDark: boolean;
   setDark: (value: boolean) => void;
+  setUsername: (value: string) => void;
 }
 
 function SettingsMain({
@@ -18,6 +20,7 @@ function SettingsMain({
   setVibranceEnabled,
   isDark,
   setDark,
+  setUsername,
 }: SettingsMainProps) {
   return (
     <div className="settings-body">
@@ -32,6 +35,7 @@ function SettingsMain({
           isDark={isDark}
           setDark={setDark}
         ></Apperance>
+        <Personalize setUsername={setUsername}></Personalize>
       </div>
     </div>
   );

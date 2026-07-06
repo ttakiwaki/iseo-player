@@ -2,7 +2,6 @@ import "./App.css";
 import Sidebar from "./components/Sidebar/SidebarMain.tsx";
 import Player from "./components/Player/PlayerMain.tsx";
 import Settings from "./components/SettingsMenu/SettingsMain.tsx";
-//import Changelog from "./components/Changelog/Changelog.tsx";
 
 import { useEffect, useState } from "react";
 import { useRef } from "react";
@@ -22,7 +21,9 @@ function App() {
 
   const [lyrics, setLyrics] = useState<LyricsResults | null>(null);
   const [lyricsOpen, setLyricsOpen] = useState<boolean>(false);
-  // const [showChangelog, setShowChangelog] = useState<boolean>(false); For Cadenza
+  const [username, setUsername] = useState<string>(() => {
+    return localStorage.getItem("username") ?? "";
+  });
 
   // Settings States
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
@@ -109,7 +110,6 @@ function App() {
 
   return (
     <div id="app">
-      {/*showChangelog && <Changelog></Changelog>*/}
       {settingsOpen && (
         <Settings
           settingsOpen={settingsOpen}
@@ -118,6 +118,7 @@ function App() {
           setVibranceEnabled={setVibranceEnabled}
           isDark={isDark}
           setDark={setDark}
+          setUsername={setUsername}
         ></Settings>
       )}
       <audio src={undefined} ref={audioRef}></audio>
@@ -146,6 +147,7 @@ function App() {
         lyrics={lyrics}
         lyricsOpen={lyricsOpen}
         setLyricsOpen={setLyricsOpen}
+        username={username}
       ></Player>
     </div>
   );

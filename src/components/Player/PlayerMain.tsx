@@ -6,6 +6,7 @@ import PlayerControls from "./PlayerControls/PlayerControls";
 import TimeControls from "./TimeControls/TimeControls";
 import BottomControls from "./BottomControls/BottomControls";
 import PlayerDisplay from "./PlayerDisplay/PlayerDisplay";
+import Welcome from "./Welcome/Welcome";
 import type { Album } from "../../types";
 import { useState, useEffect } from "react";
 import type { LyricsResults } from "../../assets/services/LyricService";
@@ -24,6 +25,7 @@ interface PlayerMainProps {
   lyrics: LyricsResults | null;
   lyricsOpen: boolean;
   setLyricsOpen: (value: boolean) => void;
+  username: string;
 }
 
 function PlayerMain({
@@ -39,6 +41,7 @@ function PlayerMain({
   lyrics,
   lyricsOpen,
   setLyricsOpen,
+  username,
 }: PlayerMainProps) {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [sync, setSync] = useState<boolean>(true);
@@ -80,10 +83,11 @@ function PlayerMain({
     return () => audio.removeEventListener("ended", nextSong);
   }, [audioRef, currentAlbum, currentTrack]);
 
-  if (currentAlbum === null) return null;
-  const album = albumsArray[currentAlbum];
+  if (currentAlbum === null || currentTrack === null) {
+    return <Welcome username={username}></Welcome>;
+  }
 
-  if (currentTrack === null) return null;
+  const album = albumsArray[currentAlbum];
   const track = album.tracks[currentTrack];
 
   navigator.mediaSession.setActionHandler("play", () => {
