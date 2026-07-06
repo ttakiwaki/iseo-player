@@ -22,7 +22,7 @@ function App() {
 
   const [lyrics, setLyrics] = useState<LyricsResults | null>(null);
   const [lyricsOpen, setLyricsOpen] = useState<boolean>(false);
-  const [showChangelog, setShowChangelog] = useState<boolean>(false); // For Cadenza
+  // const [showChangelog, setShowChangelog] = useState<boolean>(false); For Cadenza
 
   // Settings States
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
@@ -109,7 +109,7 @@ function App() {
 
   return (
     <div id="app">
-      {showChangelog && <Changelog></Changelog>}
+      {/*showChangelog && <Changelog></Changelog>*/}
       {settingsOpen && (
         <Settings
           settingsOpen={settingsOpen}

@@ -35,7 +35,6 @@ function PlayerMain({
   setAlbumsArray,
   setPlaying,
   isDark,
-  setDark,
   audioRef,
   lyrics,
   lyricsOpen,
