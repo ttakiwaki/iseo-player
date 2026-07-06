@@ -1,0 +1,95 @@
+.settings-body {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 15px;
+  padding: 30px;
+  width: 95%;
+  height: 90%;
+  z-index: 101;
+  border: 4px var(--paletteLib, rgba(0, 0, 0, 0.1)) solid;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+}
+
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.settings-card {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  width: 300px;
+  height: 300px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-items: center;
+
+  background-color: rgba(23, 23, 23, 0.8);
+  border: 2px #3b3b3b solid;
+  border-radius: 10px;
+}
+
+.settings-card svg {
+  width: 50px;
+  height: 50px;
+  margin: 20px;
+}
+
+.settings-card-title {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.settings-card-desc {
+  height: 100%;
+  text-align: center;
+  padding: 0 10px 0 10px;
+  /*margin-bottom: 20px;
+  margin-top: 20px;*/
+  line-height: 1.6;
+
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.settings-card-button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #171717;
+  border: 2px #3b3b3b solid;
+  color: white;
+  font-size: 15px;
+  width: 100px;
+  height: 44px;
+  border-radius: 15px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.settings-card-input {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #171717;
+  border: 2px #3b3b3b solid;
+  color: white;
+  font-size: 15px;
+  text-align: center;
+  box-sizing: border-box;
+  width: 100px;
+  height: 44px;
+  border-radius: 15px;
+  padding: 0 10px;
+}
+
+.cards-row {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}

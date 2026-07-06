@@ -16,16 +16,19 @@ ISEO lets you load your local music files and play them directly in the browser.
 - Play / pause, skip forward / back, shuffle, and loop
 - Seekbar and volume controls
 - Search / filter albums
+- Synced and plain lyrics via LRCLib
+- Dynamic color theming based on album artwork
+- Settings menu with persistent preferences
 
-**New Feature: Lyrics**
+**New Features: Lyrics & Dynamic Theming**
 
-Using the LRCLIB API, Synced and plain lyrics fetched from the LRCLIB database, displayed in the lyrics view
+Using the LRCLIB API, Synced and plain lyrics fetched from the LRCLIB database, are displayed in the new lyrics view area. Additionally, node-vibrant allows for dynamic theming that changes iseo's colors depending on the current album cover.
 
 ## For the best experience
 
 ISEO works best when your audio files have embedded metadata (ID3 tags). This includes track titles, artist names, track numbers, and album art. Without metadata, ISEO will fall back to using filenames — which works fine, but tagged files will look and sort much better.
 
-Free tools like [MusicBrainz Picard](https://picard.musicbrainz.org/) or [Mp3tag](https://www.mp3tag.de/) make it easy to tag your library.
+Free tools like [MusicBrainz Picard](https://picard.musicbrainz.org/) make it easy to tag your library.
 
 ---
 
@@ -49,7 +52,7 @@ Available on Vercel: [iseo-player.vercel.app](https://iseo-player.vercel.app)
 | ------- | --------- | ----------- | ---------------------------------- |
 | v1      | Overture  | ✅ Released | Single-track engine, album builder |
 | v2      | Rinascita | ✅ Released | React/TSX rewrite, ID3 metadata    |
-| v3      | Aria      | 🚧 Active   | Lyrics support via LRCLIB          |
+| v3      | Aria      | ✅ Released | Lyrics support via LRCLIB          |
 | v4      | Cadenza   | Planned     | Full feature expansion             |
 
 **Overture (v1)** is preserved at [iseo-legacy](https://github.com/ttakiwaki/iseo-legacy). All future development continues on this current repository.
@@ -62,7 +65,7 @@ Available on Vercel: [iseo-player.vercel.app](https://iseo-player.vercel.app)
 
 **Rinascita (v2):** React, TypeScript, Vite, music-metadata
 
-**Aria (v3):** React, TypeScript, Vite, music-metadata, LRCLIB
+**Aria (v3):** React, TypeScript, Vite, music-metadata, LRCLIB, node-vibrant
 
 ---
 

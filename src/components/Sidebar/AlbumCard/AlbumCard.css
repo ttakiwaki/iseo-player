@@ -70,5 +70,5 @@
 }
 
 .song-selected {
-  color: var(--selectColor, #ff746c);
+  color: var(--paletteSelect, (--selectColor), #ff746c);
 }

@@ -1,5 +1,5 @@
 import "./BottomControls.css";
-import { Volume2, Palette, MicVocal, MoonStar, Sun } from "lucide-react";
+import { Volume2, MicVocal, MoonStar, Sun } from "lucide-react";
 import { useState } from "react";
 
 interface VolumeScrubberProps {
@@ -21,36 +21,6 @@ function BottomControls({
 
   return (
     <div className="bottom-controls">
-      <button
-        onClick={() => {
-          document.documentElement.classList.toggle("dark");
-          setDark(!isDark);
-        }}
-      >
-        {isDark ? (
-          <Sun className="button-iconsm"></Sun>
-        ) : (
-          <MoonStar className="button-iconsm"></MoonStar>
-        )}
-      </button>
-
-      <button
-        onClick={() => {
-          const newColor = window.prompt(
-            "New Select Color? Return a Hex Code (Default: FF746C)",
-          );
-          if (newColor === null) return;
-          else {
-            document.documentElement.style.setProperty(
-              "--selectColor",
-              "#" + newColor,
-            );
-          }
-        }}
-      >
-        <Palette className="button-iconsm"></Palette>
-      </button>
-
       <button
         onClick={() => {
           setLyricsOpen(!lyricsOpen);

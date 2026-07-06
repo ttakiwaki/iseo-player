@@ -18,11 +18,13 @@
 .lyric-area p {
   margin-bottom: 20px;
   transition:
+    text-shadow 0.5s ease,
     color 0.5s ease,
     font-weight 0.5s ease;
 }
 
 .active {
   font-weight: bold;
-  color: var(--selectColor, #ff746c);
+  color: var(--paletteSelect, var(--selectColor), #ff746c);
+  text-shadow: 0 0 100px var(--paletteSelect);
 }

@@ -15,6 +15,8 @@ interface SidebarMainProps {
   setAlbum: (value: number | null) => void;
   setAlbumsArray: (value: Album[]) => void;
   isDark: boolean;
+  settingsOpen: boolean;
+  setSettingsOpen: (value: boolean) => void;
 }
 
 function SidebarMain({
@@ -25,6 +27,8 @@ function SidebarMain({
   setAlbum,
   setAlbumsArray,
   isDark,
+  settingsOpen,
+  setSettingsOpen,
 }: SidebarMainProps) {
   const [search, setSearch] = useState("");
   const filteredAlbums = albumsArray.filter((album) =>
@@ -33,7 +37,11 @@ function SidebarMain({
 
   return (
     <div className="sidebar-main">
-      <Header isDark={isDark}></Header>
+      <Header
+        isDark={isDark}
+        settingsOpen={settingsOpen}
+        setSettingsOpen={setSettingsOpen}
+      ></Header>
       <Searchbar setSearch={setSearch}></Searchbar>
       <AlbumShelf
         currentTrack={currentTrack}

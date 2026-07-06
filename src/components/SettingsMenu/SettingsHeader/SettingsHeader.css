@@ -1,0 +1,26 @@
+.settings-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.settings-title {
+  font-size: 40px;
+}
+
+.settings-exit-button {
+  border: none;
+  background-color: #00000000;
+  color: white;
+}
+
+.settings-exit-button svg {
+  width: 40px;
+  height: 40px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.settings-exit-button svg:hover {
+  transform: scale(1.2);
+}

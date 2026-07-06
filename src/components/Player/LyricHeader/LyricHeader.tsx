@@ -1,15 +1,23 @@
 import type { Album, Track } from "../../../types";
 import { AudioLines } from "lucide-react";
 import "./LyricHeader.css";
+import type { LyricsResults } from "../../../assets/services/LyricService";
 
 interface LyricHeaderProps {
   album: Album;
   track: Track;
   sync: boolean;
   setSync: (value: boolean) => void;
+  lyrics: LyricsResults | null;
 }
 
-function LyricHeader({ album, track, setSync, sync }: LyricHeaderProps) {
+function LyricHeader({
+  album,
+  track,
+  setSync,
+  sync,
+  lyrics,
+}: LyricHeaderProps) {
   return (
     <div className="lyricheader">
       <div className="lyricheader-left">
@@ -19,7 +27,7 @@ function LyricHeader({ album, track, setSync, sync }: LyricHeaderProps) {
           <p>{track.artist}</p>
         </div>
       </div>
-      <div className="lyric-sync">
+      <div className={lyrics?.synced ? "lyric-sync" : "hidden"}>
         <button
           onClick={() => {
             setSync(!sync);

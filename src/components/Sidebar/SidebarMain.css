@@ -1,5 +1,5 @@
 .sidebar-main {
-  background-color: var(--libSide);
+  background-color: var(--paletteLib, var(--libSide));
   padding-left: 10px;
   padding-right: 10px;
   display: flex;

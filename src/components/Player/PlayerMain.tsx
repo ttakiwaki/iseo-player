@@ -42,7 +42,7 @@ function PlayerMain({
   setLyricsOpen,
 }: PlayerMainProps) {
   const [currentTime, setCurrentTime] = useState<number>(0);
-  const [sync, setSync] = useState<boolean>(false);
+  const [sync, setSync] = useState<boolean>(true);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -114,6 +114,7 @@ function PlayerMain({
             track={track}
             sync={sync}
             setSync={setSync}
+            lyrics={lyrics}
           ></LyricHeader>
           <LyricBox
             lyrics={lyrics}

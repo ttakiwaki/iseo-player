@@ -4,28 +4,16 @@ import icondark from "../../../assets/icons/icon-dark.svg";
 
 interface HeaderProps {
   isDark: boolean;
+  settingsOpen: boolean;
+  setSettingsOpen: (value: boolean) => void;
 }
 
-function Header({ isDark }: HeaderProps) {
+function Header({ isDark, settingsOpen, setSettingsOpen }: HeaderProps) {
   return (
     <div>
       <img
         onClick={() => {
-          const sidebarWidth: string | null = window.prompt(
-            "New Library Size? Answer in % (Default: 20%)",
-          );
-          if (sidebarWidth === null) return;
-          else if (Number(sidebarWidth) < 2) {
-            window.alert("Input must be > 2!");
-          } else if (!isNaN(Number(sidebarWidth))) {
-            const libSize = Number(sidebarWidth);
-            document.documentElement.style.setProperty(
-              "--libWidth",
-              libSize + "%",
-            );
-          } else {
-            window.alert("Input in integers only!");
-          }
+          setSettingsOpen(!settingsOpen);
         }}
         src={isDark ? icondark : iconlight}
         alt="iseo logo"
