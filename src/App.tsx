@@ -2,7 +2,7 @@ import "./App.css";
 import Sidebar from "./components/Sidebar/SidebarMain.tsx";
 import Player from "./components/Player/PlayerMain.tsx";
 import Settings from "./components/SettingsMenu/SettingsMain.tsx";
-import Changelog from "./components/Changelog/Changelog.tsx";
+//import Changelog from "./components/Changelog/Changelog.tsx";
 
 import { useEffect, useState } from "react";
 import { useRef } from "react";
