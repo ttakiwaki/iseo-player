@@ -1,19 +1,15 @@
 import "./BottomControls.css";
-import { Volume2, MicVocal, MoonStar, Sun } from "lucide-react";
+import { Volume2, MicVocal } from "lucide-react";
 import { useState } from "react";
 
 interface VolumeScrubberProps {
   audioRef: React.RefObject<HTMLAudioElement | null>;
-  isDark: boolean;
-  setDark: (value: boolean) => void;
   setLyricsOpen: (value: boolean) => void;
   lyricsOpen: boolean;
 }
 
 function BottomControls({
   audioRef,
-  isDark,
-  setDark,
   setLyricsOpen,
   lyricsOpen,
 }: VolumeScrubberProps) {

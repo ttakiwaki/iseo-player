@@ -160,8 +160,6 @@ function PlayerMain({
       )}
       <BottomControls
         audioRef={audioRef}
-        isDark={isDark}
-        setDark={setDark}
         setLyricsOpen={setLyricsOpen}
         lyricsOpen={lyricsOpen}
       ></BottomControls>
