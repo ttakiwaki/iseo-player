@@ -17,7 +17,7 @@ function Welcome({ username }: WelcomeProps) {
 
   const [line1, line2] = useMemo(() => {
     return welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
-  }, []);
+  }, [username]);
   if (username) {
     return (
       <div className="welcome-area">

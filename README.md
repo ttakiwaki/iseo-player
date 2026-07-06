@@ -19,6 +19,7 @@ ISEO lets you load your local music files and play them directly in the browser.
 - Synced and plain lyrics via LRCLib
 - Dynamic color theming based on album artwork
 - Settings menu with persistent preferences
+- Welcome page for new / existing users
 
 **New Features: Lyrics & Dynamic Theming**
 
