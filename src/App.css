@@ -72,3 +72,7 @@ button:hover .button-iconsm {
 .button-selected {
   color: var(--paletteSelect, var(--selectColor), #ff746c);
 }
+
+a {
+  color: var(--paletteSelect, var(--selectColor), #ff746c);
+}

@@ -25,13 +25,10 @@ function Welcome({ username }: WelcomeProps) {
           {line1} <br /> {line2}
         </h2>
         <hr style={{ width: 1000 }}></hr>
-        <h3 className="version-title">What's new in Aria (Version 3) </h3>
+        <h3 className="version-title">What's new in Cadenza (Version 4) </h3>
         <p className="whats-new">
-          ✦ <strong>Lyrics</strong> — Synced and plain lyrics via LRCLib <br />✦{" "}
-          <strong>Vibrant Themes</strong> — Colors that shift with your album
-          art
-          <br />✦ <strong>Settings</strong> — Persistent preferences, now saved
-          across sessions
+          ✦ <strong>Discord Rich Presence</strong> — Show off what your playing
+          on Discord <br />
         </p>
         <div className="settings-info">
           <Settings></Settings>
@@ -47,13 +44,10 @@ function Welcome({ username }: WelcomeProps) {
           Upload your music folder to get started
         </h2>
         <hr style={{ width: 1000 }}></hr>
-        <h3 className="version-title">What's new in Aria (Version 3) </h3>
+        <h3 className="version-title">What's new in Cadenza (Version 4) </h3>
         <p className="whats-new">
-          ✦ <strong>Lyrics</strong> — Synced and plain lyrics via LRCLib <br />✦{" "}
-          <strong>Vibrant Themes</strong> — Colors that shift with your album
-          art
-          <br />✦ <strong>Settings</strong> — Persistent preferences, now saved
-          across sessions
+          ✦ <strong>Discord Rich Presence</strong> — Show off what you're
+          listening to on iseo using Discord's Rich Presence. <br />
         </p>
         <div className="settings-info">
           <Settings></Settings>

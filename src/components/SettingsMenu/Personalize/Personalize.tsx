@@ -51,7 +51,14 @@ function Personalize({
           <p className="settings-card-title">Discord Rich Presence</p>
           <p className="settings-card-desc">
             Show what you're listening to on your Discord profile. Requires the
-            ISEO Discord RPC app to be running on your computer.
+            ISEO Discord RPC app to be running on your computer.{" "}
+            <strong>
+              Only works with compatible browsers: Chromium Based and Firefox
+              Based.
+            </strong>{" "}
+            Visit the{" "}
+            <a href="https://github.com/ttakiwaki/iseo-rpc">iseo-rpc</a>{" "}
+            repository for more details.
           </p>
           <button
             className="settings-card-button"

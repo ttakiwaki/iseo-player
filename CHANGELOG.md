@@ -6,6 +6,15 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [v4.1.1] — Discord RPC Connection
+
+### Fixed
+
+- Welcome screen still having Aria details
+- Added more detail to the Discord RPC setting
+
+---
+
 ## [v4.1.0] — Discord RPC Connection
 
 ### Added
