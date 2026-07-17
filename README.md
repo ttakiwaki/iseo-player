@@ -19,6 +19,7 @@ ISEO lets you load your local music files and play them directly in the browser.
 - Synced and plain lyrics via LRCLib
 - Dynamic color theming based on album artwork
 - Settings menu with persistent preferences
+- Welcome page for new / existing users
 
 **Cadenza (v4)** ships as rolling releases — new features land incrementally rather than in one big version bump. For a full, up-to-date list of what's shipped, see [CHANGELOG.md](./CHANGELOG.md).
 
