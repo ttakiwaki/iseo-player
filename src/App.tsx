@@ -33,6 +33,9 @@ function App() {
   const [vibranceEnabled, setVibranceEnabled] = useState<boolean>(() => {
     return JSON.parse(localStorage.getItem("vibranceEnabled") ?? "false");
   });
+  const [rpcEnabled, setRpcEnabled] = useState<boolean>(() => {
+    return JSON.parse(localStorage.getItem("rpcEnabled") ?? "false");
+  });
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add("dark");
@@ -44,7 +47,7 @@ function App() {
   useEffect(() => {
     if (currentTrack !== null && currentAlbum !== null && audioRef.current) {
       audioRef.current.src = albumsArray[currentAlbum].tracks[currentTrack].url;
-      audioRef.current.play();
+      audioRef.current.play().catch(() => {});
       setPlaying(true);
       document.title = `${albumsArray[currentAlbum].tracks[currentTrack].title} - iseo`;
 
@@ -63,8 +66,56 @@ function App() {
           },
         ],
       });
+
+      // DISCORD RPC UPDATES
+      if (rpcEnabled) {
+        audioRef.current?.addEventListener(
+          "loadedmetadata",
+          () => {
+            void fetch("http://localhost:8000/update", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                title: albumsArray[currentAlbum].tracks[currentTrack].title,
+                artist: albumsArray[currentAlbum].tracks[currentTrack].artist,
+                album: albumsArray[currentAlbum].tracks[currentTrack].album,
+                currentTime: audioRef.current?.currentTime,
+                duration: audioRef.current?.duration,
+                playing: playing,
+                albumMBID:
+                  albumsArray[currentAlbum].tracks[currentTrack].albumMBID,
+              }),
+            }).catch(() => {
+              console.error("Discord RPC Unreachable");
+            });
+          },
+          { once: true },
+        );
+      }
     }
   }, [currentTrack, currentAlbum, audioRef.current?.src]);
+
+  // DISCORD RPC UPDATES
+  // Playing & Pausing Logic
+  useEffect(() => {
+    if (rpcEnabled && currentAlbum !== null && currentTrack != null) {
+      void fetch("http://localhost:8000/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: albumsArray[currentAlbum].tracks[currentTrack].title,
+          artist: albumsArray[currentAlbum].tracks[currentTrack].artist,
+          album: albumsArray[currentAlbum].tracks[currentTrack].album,
+          currentTime: audioRef.current?.currentTime,
+          duration: audioRef.current?.duration,
+          playing: playing,
+          albumMBID: albumsArray[currentAlbum].tracks[currentTrack].albumMBID,
+        }),
+      }).catch(() => {
+        console.error("Discord RPC Unreachable");
+      });
+    }
+  }, [playing]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -119,6 +170,8 @@ function App() {
           isDark={isDark}
           setDark={setDark}
           setUsername={setUsername}
+          rpcEnabled={rpcEnabled}
+          setRpcEnabled={setRpcEnabled}
         ></Settings>
       )}
       <audio src={undefined} ref={audioRef}></audio>

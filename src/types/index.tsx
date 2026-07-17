@@ -7,6 +7,7 @@ export interface Track {
   metaDuration?: number;
   cover?: string | undefined;
   albumArtist?: string | undefined;
+  albumMBID?: string | undefined;
 }
 
 export interface Album {

@@ -11,6 +11,8 @@ interface SettingsMainProps {
   isDark: boolean;
   setDark: (value: boolean) => void;
   setUsername: (value: string) => void;
+  rpcEnabled: boolean;
+  setRpcEnabled: (value: boolean) => void;
 }
 
 function SettingsMain({
@@ -21,6 +23,8 @@ function SettingsMain({
   isDark,
   setDark,
   setUsername,
+  rpcEnabled,
+  setRpcEnabled,
 }: SettingsMainProps) {
   return (
     <div className="settings-body">
@@ -35,7 +39,11 @@ function SettingsMain({
           isDark={isDark}
           setDark={setDark}
         ></Apperance>
-        <Personalize setUsername={setUsername}></Personalize>
+        <Personalize
+          setUsername={setUsername}
+          rpcEnabled={rpcEnabled}
+          setRpcEnabled={setRpcEnabled}
+        ></Personalize>
       </div>
     </div>
   );

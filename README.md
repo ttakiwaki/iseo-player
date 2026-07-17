@@ -8,7 +8,7 @@ A clean, client-side music player that runs entirely in the browser.
 
 ISEO lets you load your local music files and play them directly in the browser. Everything runs client-side!
 
-**Aria (v3) includes:**
+**Current features:**
 
 - Single file and multi-folder upload with automatic album detection
 - ID3 metadata parsing (title, artist, track number, duration)
@@ -20,9 +20,7 @@ ISEO lets you load your local music files and play them directly in the browser.
 - Dynamic color theming based on album artwork
 - Settings menu with persistent preferences
 
-**New Features: Lyrics & Dynamic Theming**
-
-Using the LRCLIB API, Synced and plain lyrics fetched from the LRCLIB database, are displayed in the new lyrics view area. Additionally, node-vibrant allows for dynamic theming that changes iseo's colors depending on the current album cover.
+**Cadenza (v4)** ships as rolling releases — new features land incrementally rather than in one big version bump. For a full, up-to-date list of what's shipped, see [CHANGELOG.md](./CHANGELOG.md).
 
 ## For the best experience
 
@@ -48,12 +46,12 @@ Available on Vercel: [iseo-player.vercel.app](https://iseo-player.vercel.app)
 
 ## Roadmap
 
-| Version | Name      | Status      | Focus                              |
-| ------- | --------- | ----------- | ---------------------------------- |
-| v1      | Overture  | ✅ Released | Single-track engine, album builder |
-| v2      | Rinascita | ✅ Released | React/TSX rewrite, ID3 metadata    |
-| v3      | Aria      | ✅ Released | Lyrics support via LRCLIB          |
-| v4      | Cadenza   | Planned     | Full feature expansion             |
+| Version | Name      | Status         | Focus                                                                         |
+| ------- | --------- | -------------- | ----------------------------------------------------------------------------- |
+| v1      | Overture  | ✅ Released    | Single-track engine, album builder                                            |
+| v2      | Rinascita | ✅ Released    | React/TSX rewrite, ID3 metadata                                               |
+| v3      | Aria      | ✅ Released    | Lyrics support via LRCLIB                                                     |
+| v4      | Cadenza   | 🔄 In Progress | Full feature expansion, rolling releases — see [CHANGELOG.md](./CHANGELOG.md) |
 
 **Overture (v1)** is preserved at [iseo-legacy](https://github.com/ttakiwaki/iseo-legacy). All future development continues on this current repository.
 
@@ -66,6 +64,8 @@ Available on Vercel: [iseo-player.vercel.app](https://iseo-player.vercel.app)
 **Rinascita (v2):** React, TypeScript, Vite, music-metadata
 
 **Aria (v3):** React, TypeScript, Vite, music-metadata, LRCLIB, node-vibrant
+
+**Cadenza (v4):** React, TypeScript, Vite, music-metadata, LRCLIB, node-vibrant, Discord RPC ([iseo-rpc](https://github.com/ttakiwaki/iseo-rpc)), Simple Icons
 
 ---
 

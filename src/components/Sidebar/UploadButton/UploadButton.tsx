@@ -38,6 +38,7 @@ function Upload({ albumsArray, setAlbumsArray }: UploadProps) {
           let metaDuration = undefined;
           let cover = undefined;
           let albumArtist = undefined;
+          let albumMBID = undefined;
 
           try {
             const metadata = await parseBlob(file);
@@ -47,6 +48,7 @@ function Upload({ albumsArray, setAlbumsArray }: UploadProps) {
             trackNumber = metadata.common.track.no ?? undefined;
             metaDuration = metadata.format.duration ?? undefined;
             albumArtist = metadata.common.albumartist ?? undefined;
+            albumMBID = metadata.common.musicbrainz_albumid ?? undefined;
             const pictures = metadata.common.picture;
             if (pictures && pictures.length > 0) {
               const blob = new Blob([pictures[0].data as unknown as BlobPart], {
@@ -68,6 +70,7 @@ function Upload({ albumsArray, setAlbumsArray }: UploadProps) {
             metaDuration,
             albumArtist,
             cover,
+            albumMBID,
           });
         } else if (file.type.startsWith("image/")) {
           albumShipping[albumName].cover = URL.createObjectURL(file);
@@ -92,6 +95,7 @@ function Upload({ albumsArray, setAlbumsArray }: UploadProps) {
           let metaDuration = undefined;
           let cover = undefined;
           let albumArtist = undefined;
+          let albumMBID = undefined;
 
           try {
             const metadata = await parseBlob(file);
@@ -101,6 +105,7 @@ function Upload({ albumsArray, setAlbumsArray }: UploadProps) {
             trackNumber = metadata.common.track.no ?? undefined;
             metaDuration = metadata.format.duration ?? undefined;
             albumArtist = metadata.common.albumartist ?? undefined;
+            albumMBID = metadata.common.musicbrainz_albumid ?? undefined;
             const pictures = metadata.common.picture;
             if (pictures && pictures.length > 0) {
               const blob = new Blob([pictures[0].data as unknown as BlobPart], {
@@ -122,6 +127,7 @@ function Upload({ albumsArray, setAlbumsArray }: UploadProps) {
             metaDuration,
             cover,
             albumArtist,
+            albumMBID,
           });
         } else if (file.type.startsWith("image/")) {
           albumShipping[albumName].cover = URL.createObjectURL(file);
