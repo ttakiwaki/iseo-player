@@ -18,6 +18,7 @@ function App() {
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState<boolean>(false);
+  const [looping, setLooping] = useState(false);
 
   const [lyrics, setLyrics] = useState<LyricsResults | null>(null);
   const [lyricsOpen, setLyricsOpen] = useState<boolean>(false);
@@ -82,6 +83,7 @@ function App() {
                 currentTime: audioRef.current?.currentTime,
                 duration: audioRef.current?.duration,
                 playing: playing,
+                startTime: Date.now() / 1000,
                 albumMBID:
                   albumsArray[currentAlbum].tracks[currentTrack].albumMBID,
               }),
@@ -109,6 +111,7 @@ function App() {
           currentTime: audioRef.current?.currentTime,
           duration: audioRef.current?.duration,
           playing: playing,
+          startTime: Date.now() / 1000,
           albumMBID: albumsArray[currentAlbum].tracks[currentTrack].albumMBID,
         }),
       }).catch(() => {
@@ -116,6 +119,50 @@ function App() {
       });
     }
   }, [playing]);
+
+  // DISCORD RPC UPDATES
+  // Looping Logic
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || !rpcEnabled) return;
+
+    let wasNearEnd = false;
+    const handleTimeUpdate = () => {
+      if (!audio.loop) return;
+
+      if (audio.currentTime > audio.duration - 2) {
+        wasNearEnd = true;
+      }
+
+      if (wasNearEnd && audio.currentTime < 1) {
+        wasNearEnd = false;
+        console.log("looped");
+        if (currentAlbum !== null && currentTrack != null) {
+          void fetch("http://localhost:8000/update", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              title: albumsArray[currentAlbum].tracks[currentTrack].title,
+              artist: albumsArray[currentAlbum].tracks[currentTrack].artist,
+              album: albumsArray[currentAlbum].tracks[currentTrack].album,
+              currentTime: 0,
+              duration: audioRef.current?.duration,
+              playing: playing,
+              startTime: Date.now() / 1000,
+              albumMBID:
+                albumsArray[currentAlbum].tracks[currentTrack].albumMBID,
+              looped: true,
+            }),
+          }).catch(() => {
+            console.error("Discord RPC Unreachable");
+          });
+        }
+      }
+    };
+
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    return () => audio.removeEventListener("timeupdate", handleTimeUpdate);
+  }, [currentTrack, currentAlbum, rpcEnabled, looping]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -201,6 +248,8 @@ function App() {
         lyricsOpen={lyricsOpen}
         setLyricsOpen={setLyricsOpen}
         username={username}
+        looping={looping}
+        setLooping={setLooping}
       ></Player>
     </div>
   );

@@ -6,6 +6,15 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [v4.1.2] — Discord RPC Connection
+
+### Fixed
+
+- Looping not reseting the Discord Rich Presence back to 0:00 once the song restarts
+- More accurate time displayed on the Rich Presence (still not 100% accurate)
+
+---
+
 ## [v4.1.1] — Discord RPC Connection
 
 ### Fixed

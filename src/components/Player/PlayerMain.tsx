@@ -26,6 +26,8 @@ interface PlayerMainProps {
   lyricsOpen: boolean;
   setLyricsOpen: (value: boolean) => void;
   username: string;
+  looping: boolean;
+  setLooping: (value: boolean) => void;
 }
 
 function PlayerMain({
@@ -42,6 +44,8 @@ function PlayerMain({
   lyricsOpen,
   setLyricsOpen,
   username,
+  looping,
+  setLooping,
 }: PlayerMainProps) {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [sync, setSync] = useState<boolean>(true);
@@ -135,6 +139,8 @@ function PlayerMain({
             setTrack={setTrack}
             setAlbumsArray={setAlbumsArray}
             setPlaying={setPlaying}
+            looping={looping}
+            setLooping={setLooping}
           ></LyricControls>
         </>
       ) : (
@@ -158,6 +164,8 @@ function PlayerMain({
             setAlbumsArray={setAlbumsArray}
             setPlaying={setPlaying}
             audioRef={audioRef}
+            looping={looping}
+            setLooping={setLooping}
           ></PlayerControls>
         </>
       )}

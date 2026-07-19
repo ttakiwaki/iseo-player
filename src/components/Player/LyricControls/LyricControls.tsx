@@ -17,6 +17,8 @@ interface LyricControlsProps {
   setTrack: (value: number | null) => void;
   setAlbumsArray: (value: Album[]) => void;
   setPlaying: (value: boolean) => void;
+  looping: boolean;
+  setLooping: (value: boolean) => void;
 }
 
 function LyricControls({
@@ -30,6 +32,8 @@ function LyricControls({
   setTrack,
   setAlbumsArray,
   setPlaying,
+  looping,
+  setLooping,
 }: LyricControlsProps) {
   return (
     <div className="lyriccontrols">
@@ -50,6 +54,8 @@ function LyricControls({
           setAlbumsArray={setAlbumsArray}
           setPlaying={setPlaying}
           audioRef={audioRef}
+          looping={looping}
+          setLooping={setLooping}
         ></PlayerControls>
       </div>
     </div>

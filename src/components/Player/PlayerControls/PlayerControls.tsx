@@ -19,6 +19,8 @@ interface PlayerControlsProps {
   setAlbumsArray: (value: Album[]) => void;
   setPlaying: (value: boolean) => void;
   audioRef: React.RefObject<HTMLAudioElement | null>;
+  looping: boolean;
+  setLooping: (value: boolean) => void;
 }
 
 function PlayerControls({
@@ -30,12 +32,12 @@ function PlayerControls({
   setAlbumsArray,
   setPlaying,
   audioRef,
+  looping,
+  setLooping,
 }: PlayerControlsProps) {
   /* Initialize Functions */
 
-  //const shuffling = useRef(false);
   const [shuffling, setShuffling] = useState(false);
-  const [looping, setLooping] = useState(false);
 
   const originalTracks = useRef<Track[]>([]);
 
