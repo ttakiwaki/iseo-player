@@ -37,6 +37,7 @@ function App() {
   const [rpcEnabled, setRpcEnabled] = useState<boolean>(() => {
     return JSON.parse(localStorage.getItem("rpcEnabled") ?? "false");
   });
+
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add("dark");

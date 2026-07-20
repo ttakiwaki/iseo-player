@@ -25,6 +25,6 @@
 
 .active {
   font-weight: bold;
-  color: var(--paletteSelect, var(--selectColor), #ff746c);
+  color: var(--selectColor, var(--paletteSelect, #ff746c));
   text-shadow: 0 0 100px var(--paletteSelect);
 }

@@ -6,6 +6,19 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [v4.1.3] — Discord RPC Connection
+
+### Added
+
+- Re-added select color
+
+### Fixed
+
+- Made iseo_rpc hyperlink anchor element target \_blank instead of \_self
+- Several things not falling back to the default iseo color because of unused var(selectColor) before
+
+---
+
 ## [v4.1.2] — Discord RPC Connection
 
 ### Fixed

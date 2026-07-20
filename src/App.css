@@ -70,9 +70,9 @@ button:hover .button-iconsm {
 }
 
 .button-selected {
-  color: var(--paletteSelect, var(--selectColor), #ff746c);
+  color: var(--selectColor, var(--paletteSelect, #ff746c));
 }
 
 a {
-  color: var(--paletteSelect, var(--selectColor), #ff746c);
+  color: var(--selectColor, var(--paletteSelect, #ff746c));
 }

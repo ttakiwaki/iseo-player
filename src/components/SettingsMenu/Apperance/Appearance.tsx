@@ -1,4 +1,10 @@
-import { Paintbrush, RulerDimensionLine, MoonStar, Sun } from "lucide-react";
+import {
+  Paintbrush,
+  RulerDimensionLine,
+  SquareDashedText,
+  MoonStar,
+  Sun,
+} from "lucide-react";
 import { useEffect } from "react";
 import "./Appearance.css";
 
@@ -64,6 +70,41 @@ function Apperance({
           >
             {vibranceEnabled ? "Enabled" : "Disabled"}
           </button>
+        </div>
+
+        {/* Select Color Settings */}
+        <div className="settings-card">
+          <SquareDashedText></SquareDashedText>
+          <p className="settings-card-title">Select Color</p>
+          <p className="settings-card-desc">
+            Customize the highlight color used for selections. This will
+            overwrite all other select colors in the app.&nbsp;
+            <strong>
+              Default is <span className="color-example">#ff746c</span> when
+              Vibrance is disabled.
+            </strong>
+            Please enter a hex code, or enter 'None' to remove the selected
+            color.
+          </p>
+          <input
+            className="settings-card-input"
+            onChange={(e) => {
+              const newColor = e.target.value.trim();
+              if (newColor.toLowerCase() === "none") {
+                document.documentElement.style.removeProperty("--selectColor");
+              } else if (newColor.startsWith("#")) {
+                document.documentElement.style.setProperty(
+                  "--selectColor",
+                  newColor,
+                );
+              } else {
+                document.documentElement.style.setProperty(
+                  "--selectColor",
+                  "#" + newColor,
+                );
+              }
+            }}
+          ></input>
         </div>
 
         {/* Library Size Settings */}

@@ -57,7 +57,9 @@ function Personalize({
               Based.
             </strong>{" "}
             Visit the{" "}
-            <a href="https://github.com/ttakiwaki/iseo-rpc">iseo-rpc</a>{" "}
+            <a href="https://github.com/ttakiwaki/iseo-rpc" target="_blank">
+              iseo-rpc
+            </a>{" "}
             repository for more details.
           </p>
           <button
