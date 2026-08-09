@@ -60,7 +60,7 @@ Available on Vercel: [iseo-player.vercel.app](https://iseo-player.vercel.app)
 
 ## Stack
 
-**Overture (v1):** Vanilla HTML, CSS, JavaScript
+**Overture (v1):** Vanilla HTML, CSS, JavaScript, Lucide
 
 **Rinascita (v2):** React, TypeScript, Vite, music-metadata
 

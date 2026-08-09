@@ -6,6 +6,34 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [v4.2.0] — ISEO UI Overhaul
+
+### Added
+
+- Dedicated tabs for each section of ISEO
+- Redone vibrant backdrop, now with blurred album art (very w.i.p. needs more refining)
+- Custom scrubbers for volume / song timebar
+- Custom Toggle / Input for settings (technical addition)
+
+### Changed
+
+- Entire ISEO user interface ;)
+- Vibrant Themes no longer extracts a full color palette from album art (previously via node-vibrant); now only used for select color
+- Skip Back now restarts from 0:00 when current time is > 5 seconds instead of skipping whole song
+- Replaced the option for exact sidebar width with a collapse option
+- ISEO icon no longer is the settings menu (modal). Replaced with dedicated settings tab
+
+### Fixed
+
+- Folder uploads no longer break when `.DS_Store` or other non-audio files are present
+- Crash when an album has no tracks (e.g. from junk-only folders)
+
+### Removed
+
+- Option to adjust sidebar width
+
+---
+
 ## [v4.1.4] — Discord RPC Connection
 
 ### Added
