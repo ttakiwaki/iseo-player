@@ -1,0 +1,40 @@
+/*
+<div className="settings-row">
+  {icon}
+  <div className="row-information">
+    <p>{title}</p>
+    <p>{description}</p>
+  </div>
+  {control}
+</div>
+*/
+
+.settings-row {
+  margin-top: 25px;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  background-color: var(--rowBackground);
+  border-radius: 15px;
+}
+
+.settings-row > svg:first-child {
+  width: 30px;
+  height: 30px;
+}
+
+.row-information {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 20px;
+}
+
+.row-title {
+  font-weight: bold;
+}
+
+.row-description {
+  max-width: 850px;
+}

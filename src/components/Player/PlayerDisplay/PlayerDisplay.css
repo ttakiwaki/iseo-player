@@ -22,11 +22,11 @@
   gap: 10px;
 }
 
-.player-title {
+.player-info p:first-child {
   font-weight: bold;
   font-size: 25px;
 }
 
-.player-artist {
+.player-info p:last-child {
   font-size: 20px;
 }

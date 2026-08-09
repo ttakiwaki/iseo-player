@@ -1,10 +1,12 @@
 import "./App.css";
-import Sidebar from "./components/Sidebar/SidebarMain.tsx";
-import Player from "./components/Player/PlayerMain.tsx";
-import Settings from "./components/SettingsMenu/SettingsMain.tsx";
+import NavigationMain from "./components/Navigation/NavigationMain.tsx";
+import LibraryMain from "./components/Library/LibraryMain.tsx";
+import PlayerMain from "./components/Player/PlayerMain.tsx";
+import SettingsMain from "./components/Settings/SettingsMain.tsx";
+import Welcome from "./components/Library/Welcome/Welcome.tsx";
+import VibrantBg from "./components/VibrantBg/VibrantBg.tsx";
 
-import { useEffect, useState } from "react";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { GetCached } from "./assets/services/LyricService.ts";
 import { GetColors } from "./assets/services/ColorService.ts";
 
@@ -14,6 +16,7 @@ import type { LyricsResults } from "./assets/services/LyricService.ts";
 function App() {
   const [currentTrack, setTrack] = useState<number | null>(null);
   const [currentAlbum, setAlbum] = useState<number | null>(null);
+  const [viewedAlbum, setViewedAlbum] = useState<number | null>(null);
   const [albumsArray, setAlbumsArray] = useState<Album[]>([]);
 
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -22,20 +25,19 @@ function App() {
 
   const [lyrics, setLyrics] = useState<LyricsResults | null>(null);
   const [lyricsOpen, setLyricsOpen] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>(() => {
-    return localStorage.getItem("username") ?? "";
-  });
 
   // Settings States
-  const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
   const [isDark, setDark] = useState<boolean>(() => {
-    return JSON.parse(localStorage.getItem("isDark") ?? "false");
+    return JSON.parse(localStorage.getItem("darkToggle") ?? "false");
   });
   const [vibranceEnabled, setVibranceEnabled] = useState<boolean>(() => {
-    return JSON.parse(localStorage.getItem("vibranceEnabled") ?? "false");
+    return JSON.parse(localStorage.getItem("vibrantToggle") ?? "false");
   });
   const [rpcEnabled, setRpcEnabled] = useState<boolean>(() => {
-    return JSON.parse(localStorage.getItem("rpcEnabled") ?? "false");
+    return JSON.parse(localStorage.getItem("rpcToggle") ?? "false");
+  });
+  const [username, setUsername] = useState<string>(() => {
+    return localStorage.getItem("username") ?? "";
   });
 
   useEffect(() => {
@@ -44,7 +46,29 @@ function App() {
     } else {
       document.documentElement.classList.remove("dark");
     }
-  }, []);
+  }, [isDark]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    function handleEnded() {
+      if (
+        currentTrack !== null &&
+        currentAlbum !== null &&
+        albumsArray !== null
+      ) {
+        const nextTrack = currentTrack + 1;
+        if (nextTrack < albumsArray[currentAlbum].tracks.length) {
+          setTrack(nextTrack);
+        }
+      }
+    }
+
+    audio.addEventListener("ended", handleEnded);
+
+    return () => audio.removeEventListener("ended", handleEnded);
+  }, [currentAlbum, currentTrack, albumsArray]);
 
   useEffect(() => {
     if (currentTrack !== null && currentAlbum !== null && audioRef.current) {
@@ -96,7 +120,7 @@ function App() {
         );
       }
     }
-  }, [currentTrack, currentAlbum, audioRef.current?.src]);
+  }, [currentTrack, currentAlbum]);
 
   // DISCORD RPC UPDATES
   // Playing & Pausing Logic
@@ -165,9 +189,12 @@ function App() {
     return () => audio.removeEventListener("timeupdate", handleTimeUpdate);
   }, [currentTrack, currentAlbum, rpcEnabled, looping]);
 
+  const [volume, setVolume] = useState(0.5);
+
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = 0.5;
+      setVolume(0.5);
     }
   }, []);
 
@@ -191,67 +218,90 @@ function App() {
   useEffect(() => {
     if (currentTrack !== null && currentAlbum !== null && vibranceEnabled) {
       document.documentElement.style.removeProperty("--paletteSelect");
-      document.documentElement.style.removeProperty("--paletteLib");
-      document.documentElement.style.removeProperty("--palettePlayer");
       GetColors(
         albumsArray[currentAlbum].tracks[currentTrack].cover ??
           albumsArray[currentAlbum].cover,
-        isDark,
       );
     } else {
       document.documentElement.style.removeProperty("--paletteSelect");
-      document.documentElement.style.removeProperty("--paletteLib");
-      document.documentElement.style.removeProperty("--palettePlayer");
     }
-  }, [currentTrack, currentAlbum, isDark, vibranceEnabled]);
+  }, [currentTrack, currentAlbum, vibranceEnabled]);
 
-  //console.log(albumsArray);
+  // Tab Logic
+
+  const [activeTab, setActiveTab] = useState("library");
 
   return (
     <div id="app">
-      {settingsOpen && (
-        <Settings
-          settingsOpen={settingsOpen}
-          setSettingsOpen={setSettingsOpen}
-          vibranceEnabled={vibranceEnabled}
-          setVibranceEnabled={setVibranceEnabled}
-          isDark={isDark}
-          setDark={setDark}
-          setUsername={setUsername}
-          rpcEnabled={rpcEnabled}
-          setRpcEnabled={setRpcEnabled}
-        ></Settings>
-      )}
-      <audio src={undefined} ref={audioRef}></audio>
-      <Sidebar
-        currentTrack={currentTrack}
-        currentAlbum={currentAlbum}
+      <audio ref={audioRef}></audio>
+      <NavigationMain
+        setAlbumsArray={setAlbumsArray}
         albumsArray={albumsArray}
+        currentAlbum={currentAlbum}
+        currentTrack={currentTrack}
         setTrack={setTrack}
         setAlbum={setAlbum}
-        setAlbumsArray={setAlbumsArray}
+        viewedAlbum={viewedAlbum}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
         isDark={isDark}
-        settingsOpen={settingsOpen}
-        setSettingsOpen={setSettingsOpen}
-      ></Sidebar>
-      <Player
-        currentTrack={currentTrack}
-        currentAlbum={currentAlbum}
-        albumsArray={albumsArray}
-        playing={playing}
-        setTrack={setTrack}
-        setAlbumsArray={setAlbumsArray}
-        setPlaying={setPlaying}
-        isDark={isDark}
-        setDark={setDark}
-        audioRef={audioRef}
-        lyrics={lyrics}
-        lyricsOpen={lyricsOpen}
-        setLyricsOpen={setLyricsOpen}
-        username={username}
-        looping={looping}
-        setLooping={setLooping}
-      ></Player>
+      ></NavigationMain>
+      <div
+        className={
+          vibranceEnabled && currentTrack !== null
+            ? "content-area vibrance-on"
+            : "content-area"
+        }
+      >
+        <VibrantBg
+          vibranceEnabled={vibranceEnabled}
+          albumsArray={albumsArray}
+          currentAlbum={currentAlbum}
+          currentTrack={currentTrack}
+        ></VibrantBg>
+        {activeTab === "library" &&
+          (albumsArray.length <= 0 ? (
+            <Welcome username={username}></Welcome>
+          ) : (
+            <LibraryMain
+              albumsArray={albumsArray}
+              setViewedAlbum={setViewedAlbum}
+              isDark={isDark}
+            ></LibraryMain>
+          ))}
+        {activeTab === "player" && (
+          <PlayerMain
+            albumsArray={albumsArray}
+            currentAlbum={currentAlbum}
+            currentTrack={currentTrack}
+            audioRef={audioRef}
+            playing={playing}
+            setTrack={setTrack}
+            setAlbumsArray={setAlbumsArray}
+            setPlaying={setPlaying}
+            looping={looping}
+            setLooping={setLooping}
+            setVolume={setVolume}
+            volume={volume}
+            lyrics={lyrics}
+            lyricsOpen={lyricsOpen}
+            setLyricsOpen={setLyricsOpen}
+            isDark={isDark}
+          ></PlayerMain>
+        )}
+        {activeTab === "settings" && (
+          <SettingsMain
+            isDark={isDark}
+            setDark={setDark}
+            vibranceEnabled={vibranceEnabled}
+            setVibranceEnabled={setVibranceEnabled}
+            rpcEnabled={rpcEnabled}
+            setRpcEnabled={setRpcEnabled}
+            username={username}
+            setUsername={setUsername}
+          ></SettingsMain>
+        )}
+      </div>
     </div>
   );
 }

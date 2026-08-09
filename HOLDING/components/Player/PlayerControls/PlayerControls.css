@@ -1,0 +1,8 @@
+.player-controls {
+  padding-top: 15px;
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  align-items: center;
+  gap: 5px;
+}

@@ -19,7 +19,7 @@ function Personalize({
 
   return (
     <div className="personalize">
-      <h2>Make ISEO Yours</h2>
+      <h2>Personalize</h2>
       <div className="cards-row">
         {/* Name Settings */}
         <div className="settings-card">

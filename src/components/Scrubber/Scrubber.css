@@ -1,0 +1,66 @@
+.scrubber-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+}
+
+.scrubber-track {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background-color: var(--scrubberTrack);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.scrubber-location {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--fontColor);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.scrubber-track:hover .scrubber-location {
+  opacity: 1;
+}
+
+.scrubber-fill {
+  position: absolute;
+  height: 100%;
+  background-color: var(--fontColor);
+  border-radius: 2px;
+  pointer-events: none; /* clicks pass through to the track */
+}
+
+/* Scrubber Sizes */
+
+.scrubber-small {
+  height: 3px;
+}
+.scrubber-small .scrubber-location {
+  width: 8px;
+  height: 8px;
+}
+
+.scrubber-medium {
+  height: 4px;
+}
+.scrubber-medium .scrubber-location {
+  width: 12px;
+  height: 12px;
+}
+
+.scrubber-large {
+  height: 4px;
+}
+.scrubber-large .scrubber-location {
+  width: 12px;
+  height: 12px;
+}

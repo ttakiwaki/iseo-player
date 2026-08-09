@@ -1,180 +1,128 @@
 import "./PlayerMain.css";
-import LyricBox from "./LyricBox/LyricBox";
-import LyricHeader from "./LyricHeader/LyricHeader";
-import LyricControls from "./LyricControls/LyricControls";
-import PlayerControls from "./PlayerControls/PlayerControls";
-import TimeControls from "./TimeControls/TimeControls";
-import BottomControls from "./BottomControls/BottomControls";
-import PlayerDisplay from "./PlayerDisplay/PlayerDisplay";
-import Welcome from "./Welcome/Welcome";
-import type { Album } from "../../types";
-import { useState, useEffect } from "react";
+import type { Album } from "../../types/index";
 import type { LyricsResults } from "../../assets/services/LyricService";
+import { useState } from "react";
+import PlayerDisplay from "./PlayerDisplay/PlayerDisplay";
+import PlayerControls from "./PlayerControls/PlayerControls";
+import PlayerFooter from "./PlayerFooter/PlayerFooter";
+import LyricHeader from "./LyricHeader/LyricHeader";
+import LyricBody from "./LyricBody/LyricBody";
+import LyricControls from "./LyricControls/LyricControls";
 
 interface PlayerMainProps {
-  currentTrack: number | null;
-  currentAlbum: number | null;
   albumsArray: Album[];
+  currentAlbum: number | null;
+  currentTrack: number | null;
+  audioRef: React.RefObject<HTMLAudioElement | null>;
   playing: boolean;
   setTrack: (value: number | null) => void;
   setAlbumsArray: (value: Album[]) => void;
   setPlaying: (value: boolean) => void;
-  isDark: boolean;
-  setDark: (value: boolean) => void;
-  audioRef: React.RefObject<HTMLAudioElement | null>;
+  looping: boolean;
+  setLooping: (value: boolean) => void;
+  setVolume: (value: number) => void;
+  volume: number;
   lyrics: LyricsResults | null;
   lyricsOpen: boolean;
   setLyricsOpen: (value: boolean) => void;
-  username: string;
-  looping: boolean;
-  setLooping: (value: boolean) => void;
+  isDark: boolean;
 }
 
 function PlayerMain({
-  currentTrack,
-  currentAlbum,
   albumsArray,
+  currentAlbum,
+  currentTrack,
+  audioRef,
   playing,
   setTrack,
   setAlbumsArray,
   setPlaying,
-  isDark,
-  audioRef,
+  looping,
+  setLooping,
+  setVolume,
+  volume,
   lyrics,
   lyricsOpen,
   setLyricsOpen,
-  username,
-  looping,
-  setLooping,
+  isDark,
 }: PlayerMainProps) {
-  const [currentTime, setCurrentTime] = useState<number>(0);
   const [sync, setSync] = useState<boolean>(true);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    const updateTime = () => {
-      setCurrentTime(audio.currentTime);
-    };
-    audio.addEventListener("timeupdate", updateTime);
-
-    return () => {
-      audio.removeEventListener("timeupdate", updateTime);
-    };
-  }, [audioRef]);
-
-  function nextSong() {
-    if (currentAlbum === null || currentTrack === null) return;
-    const nextTrack = currentTrack + 1;
-    if (nextTrack < albumsArray[currentAlbum].tracks.length) {
-      setTrack(nextTrack);
-    }
-  }
-
-  function prevSong() {
-    if (currentAlbum === null || currentTrack === null) return;
-    const nextTrack = currentTrack - 1;
-    if (nextTrack >= 0 && nextTrack < albumsArray[currentAlbum].tracks.length) {
-      setTrack(nextTrack);
-    }
-  }
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    audio.addEventListener("ended", nextSong);
-    return () => audio.removeEventListener("ended", nextSong);
-  }, [audioRef, currentAlbum, currentTrack]);
-
-  if (currentAlbum === null || currentTrack === null) {
-    return <Welcome username={username}></Welcome>;
-  }
-
-  const album = albumsArray[currentAlbum];
-  const track = album.tracks[currentTrack];
-
-  navigator.mediaSession.setActionHandler("play", () => {
-    audioRef.current?.play();
-    setPlaying(true);
-  });
-
-  navigator.mediaSession.setActionHandler("pause", () => {
-    audioRef.current?.pause();
-    setPlaying(false);
-  });
-
-  navigator.mediaSession.setActionHandler("nexttrack", () => {
-    nextSong();
-  });
-
-  navigator.mediaSession.setActionHandler("previoustrack", () => {
-    prevSong();
-  });
-
   return (
-    <div className="player-main">
+    <>
       {lyricsOpen ? (
-        <>
-          <LyricHeader
-            album={album}
-            track={track}
-            sync={sync}
-            setSync={setSync}
-            lyrics={lyrics}
-          ></LyricHeader>
-          <LyricBox
-            lyrics={lyrics}
-            currentTime={currentTime}
-            sync={sync}
-          ></LyricBox>
-          <LyricControls
-            currentTime={currentTime}
-            audioRef={audioRef}
-            setCurrentTime={setCurrentTime}
-            currentTrack={currentTrack}
-            currentAlbum={currentAlbum}
-            albumsArray={albumsArray}
-            playing={playing}
-            setTrack={setTrack}
-            setAlbumsArray={setAlbumsArray}
-            setPlaying={setPlaying}
-            looping={looping}
-            setLooping={setLooping}
-          ></LyricControls>
-        </>
+        <div className="lyrics-main">
+          <div className="lyrics-top">
+            <LyricHeader
+              sync={sync}
+              setSync={setSync}
+              albumsArray={albumsArray}
+              currentAlbum={currentAlbum}
+              currentTrack={currentTrack}
+              lyrics={lyrics}
+              isDark={isDark}
+            ></LyricHeader>
+            <LyricBody
+              lyrics={lyrics}
+              sync={sync}
+              audioRef={audioRef}
+            ></LyricBody>
+            <LyricControls
+              albumsArray={albumsArray}
+              currentAlbum={currentAlbum}
+              currentTrack={currentTrack}
+              audioRef={audioRef}
+              playing={playing}
+              setTrack={setTrack}
+              setAlbumsArray={setAlbumsArray}
+              setPlaying={setPlaying}
+              looping={looping}
+              setLooping={setLooping}
+            ></LyricControls>
+          </div>
+          <div className="player-bottom">
+            <PlayerFooter
+              setVolume={setVolume}
+              volume={volume}
+              audioRef={audioRef}
+              lyricsOpen={lyricsOpen}
+              setLyricsOpen={setLyricsOpen}
+            ></PlayerFooter>
+          </div>
+        </div>
       ) : (
-        <>
-          <PlayerDisplay
-            album={album}
-            track={track}
-            isDark={isDark}
-          ></PlayerDisplay>
-          <TimeControls
-            audioRef={audioRef}
-            currentTime={currentTime}
-            setCurrentTime={setCurrentTime}
-          ></TimeControls>
-          <PlayerControls
-            currentTrack={currentTrack}
-            currentAlbum={currentAlbum}
-            albumsArray={albumsArray}
-            playing={playing}
-            setTrack={setTrack}
-            setAlbumsArray={setAlbumsArray}
-            setPlaying={setPlaying}
-            audioRef={audioRef}
-            looping={looping}
-            setLooping={setLooping}
-          ></PlayerControls>
-        </>
+        <div className="player-main">
+          <div className="player-top">
+            <PlayerDisplay
+              albumsArray={albumsArray}
+              currentAlbum={currentAlbum}
+              currentTrack={currentTrack}
+              isDark={isDark}
+            ></PlayerDisplay>
+            <PlayerControls
+              albumsArray={albumsArray}
+              currentAlbum={currentAlbum}
+              currentTrack={currentTrack}
+              audioRef={audioRef}
+              playing={playing}
+              setTrack={setTrack}
+              setAlbumsArray={setAlbumsArray}
+              setPlaying={setPlaying}
+              looping={looping}
+              setLooping={setLooping}
+            ></PlayerControls>
+          </div>
+          <div className="player-bottom">
+            <PlayerFooter
+              setVolume={setVolume}
+              volume={volume}
+              audioRef={audioRef}
+              lyricsOpen={lyricsOpen}
+              setLyricsOpen={setLyricsOpen}
+            ></PlayerFooter>
+          </div>
+        </div>
       )}
-      <BottomControls
-        audioRef={audioRef}
-        setLyricsOpen={setLyricsOpen}
-        lyricsOpen={lyricsOpen}
-      ></BottomControls>
-    </div>
+    </>
   );
 }
 

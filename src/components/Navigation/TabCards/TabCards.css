@@ -1,0 +1,37 @@
+.tab-body {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+}
+
+.tab-card {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 90%;
+  height: 60px;
+  padding: 15px 10px 15px 20px;
+  border-radius: 0px 7px 7px 0px;
+
+  font-weight: bold;
+  font-size: 20px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+
+.tab-card:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--selectColor, var(--paletteSelect, #ff746c)) 5%,
+    transparent
+  );
+  transition: background-color 0.2s ease;
+}
+
+.active-tab {
+  background-color: color-mix(
+    in srgb,
+    var(--selectColor, var(--paletteSelect, #ff746c)) 20%,
+    transparent
+  ) !important;
+}

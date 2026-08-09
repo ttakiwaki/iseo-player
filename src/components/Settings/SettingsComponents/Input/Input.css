@@ -1,0 +1,14 @@
+.input-container {
+  align-self: center;
+}
+
+.input-input {
+  position: relative;
+  width: 90px;
+  height: 40px;
+  border: 3px solid var(--selectColor, var(--paletteSelect, #ff746c));
+}
+
+.input-input:focus {
+  outline: none;
+}

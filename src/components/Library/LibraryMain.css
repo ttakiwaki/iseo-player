@@ -1,0 +1,22 @@
+.library {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  row-gap: 50px;
+  column-gap: 24px;
+  align-content: start;
+  padding: 24px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Chrome, Safari, Opera */
+.library-grid::-webkit-scrollbar {
+  display: none;
+}

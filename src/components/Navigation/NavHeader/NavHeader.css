@@ -1,0 +1,51 @@
+.nav-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 15px;
+  margin-top: 10px;
+}
+
+.header-icon {
+  width: 100px;
+  padding: 15px;
+  margin-top: 20px;
+  margin-bottom: 5px;
+  flex-shrink: 0;
+  opacity: 1;
+  transition:
+    width 0.25s ease,
+    opacity 0.2s ease,
+    padding 0.25s ease,
+    margin 0.25s ease;
+}
+
+.header-icon.collapsed {
+  width: 0;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+}
+
+.nav-collapse-icon {
+  margin-top: 20px;
+  margin-right: 10%;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.nav-collapsed-icon {
+  margin-top: 20px;
+  margin-left: 20px;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.nav-collapse-icon:hover,
+.nav-collapsed-icon:hover {
+  transform: scale(1.2);
+}

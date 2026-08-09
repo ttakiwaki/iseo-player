@@ -83,8 +83,8 @@ function Apperance({
               Default is <span className="color-example">#ff746c</span> when
               Vibrance is disabled.
             </strong>
-            Please enter a hex code, or enter 'None' to remove the selected
-            color.
+            &nbsp;Please enter a hex code, or enter 'None' to remove the
+            selected color.
           </p>
           <input
             className="settings-card-input"
@@ -135,21 +135,3 @@ function Apperance({
 }
 
 export default Apperance;
-
-/*onClick={() => {
-          const sidebarWidth: string | null = window.prompt(
-            "New Library Size? Answer in % (Default: 20%)",
-          );
-          if (sidebarWidth === null) return;
-          else if (Number(sidebarWidth) < 2) {
-            window.alert("Input must be > 2!");
-          } else if (!isNaN(Number(sidebarWidth))) {
-            const libSize = Number(sidebarWidth);
-            document.documentElement.style.setProperty(
-              "--libWidth",
-              libSize + "%",
-            );
-          } else {
-            window.alert("Input in integers only!");
-          }
-        }}*/

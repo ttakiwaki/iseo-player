@@ -1,26 +1,42 @@
-import type { Album, Track } from "../../../types";
+import type { Album } from "../../../types";
 import "./PlayerDisplay.css";
 import iconlight from "../../../assets/icons/icon-light.svg";
 import icondark from "../../../assets/icons/icon-dark.svg";
 
 interface PlayerDisplayProps {
-  album: Album;
-  track: Track;
+  albumsArray: Album[];
+  currentTrack: number | null;
+  currentAlbum: number | null;
   isDark: boolean;
 }
 
-function PlayerDisplay({ album, track, isDark }: PlayerDisplayProps) {
+function PlayerDisplay({
+  currentAlbum,
+  currentTrack,
+  albumsArray,
+  isDark,
+}: PlayerDisplayProps) {
   return (
     <div className="player-display">
       <img
-        src={track.cover ?? album.cover ?? (isDark ? icondark : iconlight)}
+        src={
+          (currentAlbum !== null && currentTrack !== null
+            ? albumsArray[currentAlbum]?.tracks[currentTrack]?.cover
+            : null) ?? (isDark ? icondark : iconlight)
+        }
         alt=""
       />
       <div className="player-info">
-        <p className="player-title">
-          {track.title.replace(/\.(mp3|flac|wav|aac|ogg|m4a)$/i, "")}
+        <p>
+          {(currentAlbum !== null && currentTrack !== null
+            ? albumsArray[currentAlbum]?.tracks[currentTrack].title
+            : null) ?? "Not Playing"}
         </p>
-        <p className="player-artist">{track.artist}</p>
+        <p>
+          {(currentAlbum !== null && currentTrack !== null
+            ? albumsArray[currentAlbum]?.tracks[currentTrack].artist
+            : null) ?? " -- "}
+        </p>
       </div>
     </div>
   );

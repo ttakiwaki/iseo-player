@@ -1,0 +1,11 @@
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  margin: 25px;
+}
+
+.section-header {
+  font-weight: bold;
+  font-size: 30px;
+  margin-left: 20px;
+}

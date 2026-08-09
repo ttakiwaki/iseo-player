@@ -1,8 +1,11 @@
 .player-controls {
-  padding-top: 15px;
   display: flex;
-  flex-direction: row;
-  align-self: center;
+  flex-direction: column;
   align-items: center;
-  gap: 5px;
+  width: 100%;
+}
+
+.timebar-container {
+  max-width: 600px;
+  width: 100%;
 }

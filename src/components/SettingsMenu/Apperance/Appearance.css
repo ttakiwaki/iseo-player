@@ -1,9 +1,0 @@
-.appearance {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.color-example {
-  color: #ff746c;
-}

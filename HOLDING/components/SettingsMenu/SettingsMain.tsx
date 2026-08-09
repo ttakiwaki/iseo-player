@@ -2,6 +2,7 @@ import Apperance from "./Apperance/Appearance";
 import Personalize from "./Personalize/Personalize";
 import SettingsHeader from "./SettingsHeader/SettingsHeader";
 import "./SettingsMain.css";
+import { useEffect } from "react";
 
 interface SettingsMainProps {
   settingsOpen: boolean;
@@ -26,6 +27,19 @@ function SettingsMain({
   rpcEnabled,
   setRpcEnabled,
 }: SettingsMainProps) {
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "x") {
+        event.preventDefault();
+        if (settingsOpen) {
+          setSettingsOpen(false);
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [settingsOpen]);
+
   return (
     <div className="settings-body">
       <div className="settings-content">

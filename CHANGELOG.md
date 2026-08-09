@@ -6,6 +6,22 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [v4.1.4] — Discord RPC Connection
+
+### Added
+
+- Shortcut to exit settings menu "x"
+
+### Changed
+
+- Renamed "Make ISEO Yours" category in settings to "Personalize"
+
+### Fixed
+
+- Adjusted description of "Select Color" for a missing space
+
+---
+
 ## [v4.1.3] — Discord RPC Connection
 
 ### Added

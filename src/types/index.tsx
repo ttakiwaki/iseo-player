@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export interface Track {
   title: string;
   url: string;
@@ -15,4 +17,11 @@ export interface Album {
   cover: string | null;
   tracks: Array<Track>;
   artist?: string;
+}
+
+export interface settingsRow {
+  icon: ReactNode;
+  title: string;
+  description: string | ReactNode;
+  control: ReactNode;
 }

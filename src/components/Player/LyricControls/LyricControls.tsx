@@ -1,18 +1,14 @@
-import PlayerControls from "../PlayerControls/PlayerControls";
-import TimeControls from "../TimeControls/TimeControls";
-
-import "../TimeControls/TimeControls.css";
-import "../PlayerControls/PlayerControls.css";
-import "./LyricControls.css";
+import { useEffect, useState } from "react";
 import type { Album } from "../../../types";
+import Scrubber from "../../Scrubber/Scrubber";
+import StateControls from "../StateControls/StateControls";
+import "./LyricControls.css";
 
 interface LyricControlsProps {
-  currentTime: number;
-  audioRef: React.RefObject<HTMLAudioElement | null>;
-  setCurrentTime: (value: number) => void;
-  currentTrack: number | null;
-  currentAlbum: number | null;
   albumsArray: Album[];
+  currentAlbum: number | null;
+  currentTrack: number | null;
+  audioRef: React.RefObject<HTMLAudioElement | null>;
   playing: boolean;
   setTrack: (value: number | null) => void;
   setAlbumsArray: (value: Album[]) => void;
@@ -22,12 +18,10 @@ interface LyricControlsProps {
 }
 
 function LyricControls({
-  currentTime,
-  audioRef,
-  setCurrentTime,
-  currentTrack,
-  currentAlbum,
   albumsArray,
+  currentAlbum,
+  currentTrack,
+  audioRef,
   playing,
   setTrack,
   setAlbumsArray,
@@ -35,28 +29,64 @@ function LyricControls({
   looping,
   setLooping,
 }: LyricControlsProps) {
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    function handleTimeUpdate() {
+      setCurrentTime(audio!.currentTime);
+    }
+    function handleLoadedMetadata() {
+      setDuration(audio!.duration);
+    }
+
+    if (audio.readyState >= 1) {
+      setDuration(audio.duration);
+      setCurrentTime(audio.currentTime);
+    }
+
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+
+    return () => {
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+    };
+  }, [audioRef]);
+
   return (
-    <div className="lyriccontrols">
-      <div className="lyriccontrols-top">
-        <TimeControls
+    <div className="player-controls">
+      <div className="timebar-container">
+        <Scrubber
+          size="medium"
+          value={duration > 0 ? (currentTime / duration) * 100 : 0}
+          onChange={(percent) => {
+            if (audioRef.current) {
+              const newTime = (percent / 100) * audioRef.current.duration;
+              audioRef.current.currentTime = newTime;
+              setCurrentTime(newTime);
+            }
+          }}
           currentTime={currentTime}
-          audioRef={audioRef}
-          setCurrentTime={setCurrentTime}
-        ></TimeControls>
-      </div>
-      <div className="lyriccontrols-bot">
-        <PlayerControls
-          currentTrack={currentTrack}
-          currentAlbum={currentAlbum}
+          duration={duration}
+        ></Scrubber>
+        <StateControls
           albumsArray={albumsArray}
+          currentAlbum={currentAlbum}
+          currentTrack={currentTrack}
+          audioRef={audioRef}
           playing={playing}
           setTrack={setTrack}
           setAlbumsArray={setAlbumsArray}
           setPlaying={setPlaying}
-          audioRef={audioRef}
           looping={looping}
           setLooping={setLooping}
-        ></PlayerControls>
+          setCurrentTime={setCurrentTime}
+          currentTime={currentTime}
+        ></StateControls>
       </div>
     </div>
   );

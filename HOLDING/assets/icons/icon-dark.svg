@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <filter id="royal-calligraphy-depth" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow id="dynamic-shadow" dx="0" dy="4" stdDeviation="5" flood-color="#000000" flood-opacity="0.04" />
+    </filter>
+    
+    <style>
+      .calligraphy-mark {
+        fill: #F2F0EF; /* Sleek near-black ink */
+      }
+    </style>
+  </defs>
+
+  <g class="calligraphy-mark" filter="url(#royal-calligraphy-depth)">
+    <path d="M 24,54
+             C 18,48 26,38 33,42
+             C 40,46 32,60 40,56
+             C 45,53 43,45 40,43
+             C 36,41 33,48 35,53
+             C 37,58 42,54 44,50
+             C 46,45 42,39 36,38
+             C 28,37 24,46 24,54 Z" />
+             
+    <path d="M 66,22
+             C 69,20 69,28 67,42
+             C 65,56 61,68 60,76
+             C 59,82 55,80 56,74
+             C 57,68 61,54 62,40
+             C 63,26 62,24 66,22 Z" />
+  </g>
+</svg>

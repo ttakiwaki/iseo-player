@@ -1,0 +1,36 @@
+.player-footer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  gap: 15px;
+}
+
+.lyric-button {
+  margin: 0 0 10px 15px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  transition: transform 0.15s ease-in-out;
+}
+
+.lyric-button:hover {
+  transform: scale(1.2);
+}
+
+.player-volume {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  margin: 0 0 10px 0;
+
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 200px;
+}
+
+.volumebar-container {
+  max-width: 115px;
+  width: 100%;
+}

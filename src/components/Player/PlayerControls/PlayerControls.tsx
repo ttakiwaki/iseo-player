@@ -1,184 +1,93 @@
+import { useEffect, useState } from "react";
+import type { Album } from "../../../types";
+import Scrubber from "../../Scrubber/Scrubber";
+import StateControls from "../StateControls/StateControls";
 import "./PlayerControls.css";
-import type { Album, Track } from "../../../types";
-import {
-  Shuffle,
-  SkipBack,
-  Play,
-  Pause,
-  SkipForward,
-  Repeat2,
-} from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 
 interface PlayerControlsProps {
-  currentTrack: number | null;
-  currentAlbum: number | null;
   albumsArray: Album[];
+  currentAlbum: number | null;
+  currentTrack: number | null;
+  audioRef: React.RefObject<HTMLAudioElement | null>;
   playing: boolean;
   setTrack: (value: number | null) => void;
   setAlbumsArray: (value: Album[]) => void;
   setPlaying: (value: boolean) => void;
-  audioRef: React.RefObject<HTMLAudioElement | null>;
   looping: boolean;
   setLooping: (value: boolean) => void;
 }
 
 function PlayerControls({
-  currentTrack,
-  currentAlbum,
   albumsArray,
+  currentAlbum,
+  currentTrack,
+  audioRef,
   playing,
   setTrack,
   setAlbumsArray,
   setPlaying,
-  audioRef,
   looping,
   setLooping,
 }: PlayerControlsProps) {
-  /* Initialize Functions */
-
-  const [shuffling, setShuffling] = useState(false);
-
-  const originalTracks = useRef<Track[]>([]);
-
-  function nextSong() {
-    if (currentAlbum === null || currentTrack === null) return;
-    const nextTrack = currentTrack + 1;
-    if (nextTrack < albumsArray[currentAlbum].tracks.length) {
-      setTrack(nextTrack);
-    }
-  }
-
-  function prevSong() {
-    if (currentAlbum === null || currentTrack === null) return;
-    const nextTrack = currentTrack - 1;
-    if (nextTrack >= 0 && nextTrack < albumsArray[currentAlbum].tracks.length) {
-      setTrack(nextTrack);
-    }
-  }
-
-  let currentURL: string = "";
-  const previousAlbum = useRef<number | undefined>(undefined);
-
-  function shuffleSong() {
-    if (currentAlbum === null || currentTrack === null) return;
-    if (!shuffling) {
-      setShuffling(true);
-      originalTracks.current = [...albumsArray[currentAlbum].tracks];
-      let shuffledTracks = albumsArray[currentAlbum].tracks;
-      previousAlbum.current = currentAlbum;
-      for (let i = shuffledTracks.length - 1; i > 0; i--) {
-        const nextTrack = Math.floor(Math.random() * (i + 1));
-        [shuffledTracks[i], shuffledTracks[nextTrack]] = [
-          shuffledTracks[nextTrack],
-          shuffledTracks[i],
-        ];
-      }
-      const updatedAlbums = [...albumsArray];
-      updatedAlbums[currentAlbum].tracks = shuffledTracks;
-      setAlbumsArray(updatedAlbums);
-      setTrack(0);
-      if (audioRef.current) {
-        audioRef.current.src = shuffledTracks[0].url;
-        audioRef.current.play();
-      }
-    } else {
-      setShuffling(false);
-      currentURL = albumsArray[currentAlbum].tracks[currentTrack].url;
-      const updatedAlbums = [...albumsArray];
-      updatedAlbums[currentAlbum].tracks = originalTracks.current;
-      setAlbumsArray(updatedAlbums);
-      setTrack(
-        albumsArray[currentAlbum].tracks.findIndex((i) => i.url === currentURL),
-      );
-    }
-  }
-  useEffect(() => {
-    if (
-      shuffling &&
-      currentAlbum &&
-      currentTrack &&
-      previousAlbum.current !== undefined
-    ) {
-      setShuffling(false);
-      currentURL = albumsArray[currentAlbum].tracks[currentTrack].url;
-      const updatedAlbums = [...albumsArray];
-      updatedAlbums[previousAlbum.current].tracks = originalTracks.current;
-      setAlbumsArray(updatedAlbums);
-    }
-  }, [currentAlbum]);
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === " ") {
-        event.preventDefault();
-        if (playing) {
-          audioRef.current?.pause();
-          setPlaying(false);
-        } else {
-          audioRef.current?.play();
-          setPlaying(true);
-        }
-      }
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    function handleTimeUpdate() {
+      setCurrentTime(audio!.currentTime);
+    }
+    function handleLoadedMetadata() {
+      setDuration(audio!.duration);
+    }
+
+    if (audio.readyState >= 1) {
+      setDuration(audio.duration);
+      setCurrentTime(audio.currentTime);
+    }
+
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+
+    return () => {
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [playing]);
+  }, [audioRef]);
 
   return (
-    /* JSX */
     <div className="player-controls">
-      <button className="shuffle-btn" onClick={shuffleSong}>
-        <Shuffle
-          className={
-            shuffling ? "button-iconsm button-selected" : "button-iconsm"
-          }
-        ></Shuffle>
-      </button>
-      <button onClick={prevSong}>
-        <SkipBack className="button-icon"></SkipBack>
-      </button>
-      <button
-        onClick={() => {
-          if (audioRef.current) {
-            if (playing) {
-              audioRef.current.pause();
-              setPlaying(false);
-            } else {
-              audioRef.current.play();
-              setPlaying(true);
+      <div className="timebar-container">
+        <Scrubber
+          size="medium"
+          value={duration > 0 ? (currentTime / duration) * 100 : 0}
+          onChange={(percent) => {
+            if (audioRef.current) {
+              const newTime = (percent / 100) * audioRef.current.duration;
+              audioRef.current.currentTime = newTime;
+              setCurrentTime(newTime);
             }
-          }
-        }}
-      >
-        {playing ? (
-          <Pause className="button-icon"></Pause>
-        ) : (
-          <Play className="button-icon"></Play>
-        )}
-      </button>
-      <button onClick={nextSong}>
-        <SkipForward className="button-icon"></SkipForward>
-      </button>
-      <button
-        onClick={() => {
-          if (!looping && currentTrack !== null && audioRef.current) {
-            audioRef.current.loop = true;
-            setLooping(true);
-          } else {
-            if (currentTrack !== null && audioRef.current) {
-              audioRef.current.loop = false;
-              setLooping(false);
-            }
-          }
-        }}
-      >
-        <Repeat2
-          className={
-            looping ? "button-iconsm button-selected" : "button-iconsm"
-          }
-        ></Repeat2>
-      </button>
+          }}
+          currentTime={currentTime}
+          duration={duration}
+        ></Scrubber>
+        <StateControls
+          albumsArray={albumsArray}
+          currentAlbum={currentAlbum}
+          currentTrack={currentTrack}
+          audioRef={audioRef}
+          playing={playing}
+          setTrack={setTrack}
+          setAlbumsArray={setAlbumsArray}
+          setPlaying={setPlaying}
+          looping={looping}
+          setLooping={setLooping}
+          setCurrentTime={setCurrentTime}
+          currentTime={currentTime}
+        ></StateControls>
+      </div>
     </div>
   );
 }

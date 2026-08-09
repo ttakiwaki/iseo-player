@@ -1,0 +1,71 @@
+.albuminfo {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 100%;
+  min-height: 0;
+  /* Edge, Firefox, Internet Explorer... */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+/* Chrome, Safari, Opera */
+.albuminfo::-webkit-scrollbar {
+  display: none;
+}
+
+.albuminfo-image {
+  align-self: center;
+  width: 150px;
+  border-radius: 12px;
+}
+
+.albuminfo-title {
+  font-weight: bold;
+  text-align: center;
+  padding: 0 5px;
+}
+.albuminfo-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  gap: 2px;
+}
+
+.albuminfo-rule {
+  border: none;
+  height: 1px;
+  background-color: #222222bb;
+  margin: 15px 0;
+  width: 85%;
+  align-self: center;
+  flex-shrink: 0;
+}
+
+.albuminfo-footer-song {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  padding: 5px 5px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+.albuminfo-footer-song > span:first-child {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums lining-nums; /* Source - https://stackoverflow.com/a/47362358 */
+}
+.albuminfo-footer-song > span:nth-child(2) {
+  font-size: medium;
+  transition: font-weight 0.2s ease;
+  transition: font-size 0.2s ease;
+  overflow-x: hidden;
+}
+.albuminfo-footer-song > span:nth-child(2):hover {
+  font-size: large;
+  font-weight: bold;
+}
+.albuminfo-footer-song > span:last-child {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums lining-nums; /* Source - https://stackoverflow.com/a/47362358 */
+}

@@ -45,6 +45,9 @@
   gap: 8px;
   padding: 5px 10px 5px 10px;
   color: var(--fontColor);
+  background-color: var(--buttonBorder);
+  border: 2px solid var(--buttonFill);
+  border-radius: 20px;
 }
 
 .lyric-sync span {
