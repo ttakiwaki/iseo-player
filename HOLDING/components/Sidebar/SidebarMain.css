@@ -1,8 +1,0 @@
-.sidebar-main {
-  background-color: var(--paletteLib, var(--libSide));
-  padding-left: 10px;
-  padding-right: 10px;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}

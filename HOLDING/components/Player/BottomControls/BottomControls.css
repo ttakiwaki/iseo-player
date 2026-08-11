@@ -1,9 +1,0 @@
-.bottom-controls {
-  position: absolute;
-  bottom: 5px;
-  left: 10px;
-
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-}
