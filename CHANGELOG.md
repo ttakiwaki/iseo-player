@@ -6,6 +6,22 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [v4.2.1] — ISEO UI Overhaul
+
+### Added
+
+- Offline capabilities through adding vite-pwa-plugin. Add iseo as a pwa app to your desktop to use it offline.
+
+### Fixed
+
+- Lyrics scrolling bug which would shift the entire interact side up along with the lyrics.
+
+### Removed
+
+- "HOLDING" folder (used to hold old iseo's src folder content.)
+
+---
+
 ## [v4.2.0] — ISEO UI Overhaul
 
 ### Added

@@ -28,11 +28,18 @@ function LyricBody({ lyrics, audioRef, sync }: LyricBodyProps) {
   }, [audioRef]);
 
   useEffect(() => {
-    console.log("effect fired", { sync, activeIndex, ref: activeRef.current });
-    if (sync) {
-      activeRef.current?.scrollIntoView({
-        block: "center",
-      });
+    if (sync && activeRef.current) {
+      const container = activeRef.current.closest(
+        ".lyric-area",
+      ) as HTMLElement | null;
+      if (!container) return;
+
+      const el = activeRef.current;
+      const targetScroll =
+        el.offsetTop - container.clientHeight * 0.65 + el.clientHeight / 2;
+
+      const maxScroll = container.scrollHeight - container.clientHeight;
+      container.scrollTop = Math.max(0, Math.min(targetScroll, maxScroll));
     }
   }, [activeIndex]);
 
