@@ -1,0 +1,60 @@
+.mlib-header {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.mlib-bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mlib-bottom > h1 {
+  font-size: 35px;
+}
+
+.mlib-icon {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  right: 10px;
+}
+
+.mlib-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.msettings-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: var(--fontColor);
+  background-color: var(--buttonBorder);
+  border: 2px solid var(--buttonFill);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+}
+
+.mupload-button {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: var(--fontColor);
+  background-color: var(--buttonBorder);
+  border: 2px solid var(--buttonFill);
+  border-radius: 40px;
+  font-size: 14px;
+  height: 40px;
+  padding: 0 16px;
+}

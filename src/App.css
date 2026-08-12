@@ -11,7 +11,6 @@
   --lucideIcon: #000000;
   --uploadColor: #ebebeb;
   --scrubberTrack: #e2e2e2;
-  --rowBackground: #eaeaea;
   --buttonBorder: #ffffff;
   --buttonFill: #ebebeb;
 }
@@ -23,7 +22,6 @@
   --lucideIcon: #f2f0ef;
   --uploadColor: #171717;
   --scrubberTrack: #1f1f1f;
-  --rowBackground: #141414;
   --buttonBorder: #141414;
   --buttonFill: #242424;
 }
@@ -36,35 +34,16 @@
   color: #ff746c;
 }
 
-#app {
-  font-family:
-    "Satoshi", Inter, "Noto Sans JP", "Noto Sans KR", system-ui, sans-serif;
-  color: var(--fontColor);
-  margin: 0;
-  height: 100dvh;
-
-  display: grid;
-  grid-template-columns: var(--tabWidth, 18%) 1fr;
-}
-
 .hidden {
   display: none !important;
 }
 
-.content-area {
-  position: relative;
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-  background-color: var(--interactSide);
+ul {
+  list-style: none;
 }
 
-/* Vibrance needs alot more testing to refine */
-
-.content-area.vibrance-on {
-  background-color: rgba(255, 255, 255, 0.05); /* light mode tint */
-}
-
-:root.dark .content-area.vibrance-on {
-  background-color: rgba(0, 0, 0, 0.5); /* dark mode tint */
+html,
+body {
+  overscroll-behavior: none;
+  height: 100%;
 }

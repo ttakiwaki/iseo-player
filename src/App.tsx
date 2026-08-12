@@ -1,16 +1,12 @@
 import "./App.css";
-import NavigationMain from "./components/Navigation/NavigationMain.tsx";
-import LibraryMain from "./components/Library/LibraryMain.tsx";
-import PlayerMain from "./components/Player/PlayerMain.tsx";
-import SettingsMain from "./components/Settings/SettingsMain.tsx";
-import Welcome from "./components/Library/Welcome/Welcome.tsx";
-import VibrantBg from "./components/VibrantBg/VibrantBg.tsx";
+import DesktopView from "./components/DesktopView/DesktopView.tsx";
+import MobileView from "./components/MobileView/MobileView.tsx";
 
 import { useRef, useEffect, useState } from "react";
 import { GetCached } from "./assets/services/LyricService.ts";
 import { GetColors } from "./assets/services/ColorService.ts";
 
-import type { Album } from "./types/index.tsx";
+import type { Album, Track } from "./types/index.tsx";
 import type { LyricsResults } from "./assets/services/LyricService.ts";
 
 function App() {
@@ -23,6 +19,9 @@ function App() {
   const [playing, setPlaying] = useState<boolean>(false);
   const [looping, setLooping] = useState(false);
 
+  const [shuffling, setShuffling] = useState(false);
+  const originalTracksRef = useRef<Track[]>([]);
+
   const [lyrics, setLyrics] = useState<LyricsResults | null>(null);
   const [lyricsOpen, setLyricsOpen] = useState<boolean>(false);
 
@@ -32,9 +31,6 @@ function App() {
   });
   const [vibranceEnabled, setVibranceEnabled] = useState<boolean>(() => {
     return JSON.parse(localStorage.getItem("vibrantToggle") ?? "false");
-  });
-  const [rpcEnabled, setRpcEnabled] = useState<boolean>(() => {
-    return JSON.parse(localStorage.getItem("rpcToggle") ?? "false");
   });
   const [username, setUsername] = useState<string>(() => {
     return localStorage.getItem("username") ?? "";
@@ -47,6 +43,15 @@ function App() {
       document.documentElement.classList.remove("dark");
     }
   }, [isDark]);
+
+  const [volume, setVolume] = useState(0.5);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.5;
+      setVolume(0.5);
+    }
+  }, []);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -92,111 +97,8 @@ function App() {
           },
         ],
       });
-
-      // DISCORD RPC UPDATES
-      if (rpcEnabled) {
-        audioRef.current?.addEventListener(
-          "loadedmetadata",
-          () => {
-            void fetch("http://localhost:8000/update", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                title: albumsArray[currentAlbum].tracks[currentTrack].title,
-                artist: albumsArray[currentAlbum].tracks[currentTrack].artist,
-                album: albumsArray[currentAlbum].tracks[currentTrack].album,
-                currentTime: audioRef.current?.currentTime,
-                duration: audioRef.current?.duration,
-                playing: playing,
-                startTime: Date.now() / 1000,
-                albumMBID:
-                  albumsArray[currentAlbum].tracks[currentTrack].albumMBID,
-              }),
-            }).catch(() => {
-              console.error("Discord RPC Unreachable");
-            });
-          },
-          { once: true },
-        );
-      }
     }
   }, [currentTrack, currentAlbum]);
-
-  // DISCORD RPC UPDATES
-  // Playing & Pausing Logic
-  useEffect(() => {
-    if (rpcEnabled && currentAlbum !== null && currentTrack != null) {
-      void fetch("http://localhost:8000/update", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: albumsArray[currentAlbum].tracks[currentTrack].title,
-          artist: albumsArray[currentAlbum].tracks[currentTrack].artist,
-          album: albumsArray[currentAlbum].tracks[currentTrack].album,
-          currentTime: audioRef.current?.currentTime,
-          duration: audioRef.current?.duration,
-          playing: playing,
-          startTime: Date.now() / 1000,
-          albumMBID: albumsArray[currentAlbum].tracks[currentTrack].albumMBID,
-        }),
-      }).catch(() => {
-        console.error("Discord RPC Unreachable");
-      });
-    }
-  }, [playing]);
-
-  // DISCORD RPC UPDATES
-  // Looping Logic
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio || !rpcEnabled) return;
-
-    let wasNearEnd = false;
-    const handleTimeUpdate = () => {
-      if (!audio.loop) return;
-
-      if (audio.currentTime > audio.duration - 2) {
-        wasNearEnd = true;
-      }
-
-      if (wasNearEnd && audio.currentTime < 1) {
-        wasNearEnd = false;
-        console.log("looped");
-        if (currentAlbum !== null && currentTrack != null) {
-          void fetch("http://localhost:8000/update", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              title: albumsArray[currentAlbum].tracks[currentTrack].title,
-              artist: albumsArray[currentAlbum].tracks[currentTrack].artist,
-              album: albumsArray[currentAlbum].tracks[currentTrack].album,
-              currentTime: 0,
-              duration: audioRef.current?.duration,
-              playing: playing,
-              startTime: Date.now() / 1000,
-              albumMBID:
-                albumsArray[currentAlbum].tracks[currentTrack].albumMBID,
-              looped: true,
-            }),
-          }).catch(() => {
-            console.error("Discord RPC Unreachable");
-          });
-        }
-      }
-    };
-
-    audio.addEventListener("timeupdate", handleTimeUpdate);
-    return () => audio.removeEventListener("timeupdate", handleTimeUpdate);
-  }, [currentTrack, currentAlbum, rpcEnabled, looping]);
-
-  const [volume, setVolume] = useState(0.5);
-
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = 0.5;
-      setVolume(0.5);
-    }
-  }, []);
 
   useEffect(() => {
     // Lyric Fetch
@@ -227,81 +129,73 @@ function App() {
     }
   }, [currentTrack, currentAlbum, vibranceEnabled]);
 
-  // Tab Logic
-
-  const [activeTab, setActiveTab] = useState("library");
+  // Display Mobile or Desktop
+  const userMobile = window.matchMedia("(max-width: 768px)").matches;
 
   return (
     <div id="app">
       <audio ref={audioRef}></audio>
-      <NavigationMain
-        setAlbumsArray={setAlbumsArray}
-        albumsArray={albumsArray}
-        currentAlbum={currentAlbum}
-        currentTrack={currentTrack}
-        setTrack={setTrack}
-        setAlbum={setAlbum}
-        viewedAlbum={viewedAlbum}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        isDark={isDark}
-      ></NavigationMain>
-      <div
-        className={
-          vibranceEnabled && currentTrack !== null
-            ? "content-area vibrance-on"
-            : "content-area"
-        }
-      >
-        <VibrantBg
-          vibranceEnabled={vibranceEnabled}
+      {userMobile ? (
+        <MobileView
           albumsArray={albumsArray}
           currentAlbum={currentAlbum}
           currentTrack={currentTrack}
-        ></VibrantBg>
-        {activeTab === "library" &&
-          (albumsArray.length <= 0 ? (
-            <Welcome username={username}></Welcome>
-          ) : (
-            <LibraryMain
-              albumsArray={albumsArray}
-              setViewedAlbum={setViewedAlbum}
-              isDark={isDark}
-            ></LibraryMain>
-          ))}
-        {activeTab === "player" && (
-          <PlayerMain
-            albumsArray={albumsArray}
-            currentAlbum={currentAlbum}
-            currentTrack={currentTrack}
-            audioRef={audioRef}
-            playing={playing}
-            setTrack={setTrack}
-            setAlbumsArray={setAlbumsArray}
-            setPlaying={setPlaying}
-            looping={looping}
-            setLooping={setLooping}
-            setVolume={setVolume}
-            volume={volume}
-            lyrics={lyrics}
-            lyricsOpen={lyricsOpen}
-            setLyricsOpen={setLyricsOpen}
-            isDark={isDark}
-          ></PlayerMain>
-        )}
-        {activeTab === "settings" && (
-          <SettingsMain
-            isDark={isDark}
-            setDark={setDark}
-            vibranceEnabled={vibranceEnabled}
-            setVibranceEnabled={setVibranceEnabled}
-            rpcEnabled={rpcEnabled}
-            setRpcEnabled={setRpcEnabled}
-            username={username}
-            setUsername={setUsername}
-          ></SettingsMain>
-        )}
-      </div>
+          audioRef={audioRef}
+          playing={playing}
+          setTrack={setTrack}
+          setAlbumsArray={setAlbumsArray}
+          setPlaying={setPlaying}
+          looping={looping}
+          setLooping={setLooping}
+          setVolume={setVolume}
+          volume={volume}
+          lyrics={lyrics}
+          lyricsOpen={lyricsOpen}
+          setLyricsOpen={setLyricsOpen}
+          isDark={isDark}
+          setAlbum={setAlbum}
+          viewedAlbum={viewedAlbum}
+          setViewedAlbum={setViewedAlbum}
+          setDark={setDark}
+          vibranceEnabled={vibranceEnabled}
+          setVibranceEnabled={setVibranceEnabled}
+          username={username}
+          setUsername={setUsername}
+          shuffling={shuffling}
+          setShuffling={setShuffling}
+          originalTracksRef={originalTracksRef}
+        ></MobileView>
+      ) : (
+        <DesktopView
+          albumsArray={albumsArray}
+          currentAlbum={currentAlbum}
+          currentTrack={currentTrack}
+          audioRef={audioRef}
+          playing={playing}
+          setTrack={setTrack}
+          setAlbumsArray={setAlbumsArray}
+          setPlaying={setPlaying}
+          looping={looping}
+          setLooping={setLooping}
+          setVolume={setVolume}
+          volume={volume}
+          lyrics={lyrics}
+          lyricsOpen={lyricsOpen}
+          setLyricsOpen={setLyricsOpen}
+          isDark={isDark}
+          setAlbum={setAlbum}
+          viewedAlbum={viewedAlbum}
+          setViewedAlbum={setViewedAlbum}
+          setDark={setDark}
+          vibranceEnabled={vibranceEnabled}
+          setVibranceEnabled={setVibranceEnabled}
+          username={username}
+          setUsername={setUsername}
+          shuffling={shuffling}
+          setShuffling={setShuffling}
+          originalTracksRef={originalTracksRef}
+        ></DesktopView>
+      )}
     </div>
   );
 }

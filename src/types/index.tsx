@@ -22,6 +22,6 @@ export interface Album {
 export interface settingsRow {
   icon: ReactNode;
   title: string;
-  description: string | ReactNode;
+  description?: string | ReactNode;
   control: ReactNode;
 }

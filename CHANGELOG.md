@@ -4,6 +4,22 @@ All notable changes to ISEO are documented in this file. Logs will start from Ca
 
 Format based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [v4.2.2] — ISEO UI Overhaul
+
+### Added
+
+- Created ISEO mobile player UI, fully responsive and mobile-friendly for PWA use.
+- Shuffle now unshuffles the previous album for you if you switch off early without manually stopping it.
+
+### Fixed
+
+- Fixed shuffle bug that wouldn't allow shuffling to work properly.
+
+### Issues
+
+- iOS safe area handling on ISEO's mobile player UI.
+- Not tested on other platforms other than (iPhone 16)
+
 ---
 
 ## [v4.2.1] — ISEO UI Overhaul

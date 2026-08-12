@@ -1,0 +1,10 @@
+.msettings-section {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.msection-header {
+  font-weight: bold;
+  font-size: 30px;
+}

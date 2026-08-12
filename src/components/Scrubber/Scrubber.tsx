@@ -8,6 +8,7 @@ interface ScrubberProps {
   size: "small" | "medium" | "large";
   currentTime?: number;
   duration?: number;
+  showLocation?: boolean;
 }
 
 function Scrubber({
@@ -16,6 +17,7 @@ function Scrubber({
   size,
   currentTime,
   duration,
+  showLocation,
 }: ScrubberProps) {
   const [dragging, setDragging] = useState<boolean>(false);
   const [localValue, setLocalValue] = useState<number>(value);
@@ -75,7 +77,9 @@ function Scrubber({
           style={{ width: `${displayValue}%` }}
         ></div>
         <div
-          className="scrubber-location"
+          className={
+            showLocation ? "scrubber-location visible" : "scrubber-location"
+          }
           style={{ left: `${displayValue}%` }}
         ></div>
       </div>

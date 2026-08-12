@@ -31,6 +31,10 @@
   opacity: 1;
 }
 
+.scrubber-location.visible {
+  opacity: 1;
+}
+
 .scrubber-fill {
   position: absolute;
   height: 100%;

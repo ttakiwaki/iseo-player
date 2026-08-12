@@ -1,0 +1,26 @@
+#mobile {
+  font-family:
+    "Satoshi", Inter, "Noto Sans JP", "Noto Sans KR", system-ui, sans-serif;
+  color: var(--fontColor);
+  margin: 0;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.mcontent-area {
+  position: relative;
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  background-color: var(--tabSide);
+}
+
+/* Vibrance rules remain unchanged */
+.mcontent-area.vibrance-on {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+:root.dark .mcontent-area.vibrance-on {
+  background-color: rgba(0, 0, 0, 0.5);
+}

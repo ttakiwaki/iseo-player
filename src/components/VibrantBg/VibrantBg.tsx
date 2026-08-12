@@ -6,6 +6,7 @@ interface VibrantBgProps {
   albumsArray: Album[];
   currentAlbum: number | null;
   currentTrack: number | null;
+  mobile?: boolean;
 }
 
 function VibrantBg({
@@ -13,6 +14,7 @@ function VibrantBg({
   albumsArray,
   currentAlbum,
   currentTrack,
+  mobile,
 }: VibrantBgProps) {
   if (
     vibranceEnabled === false ||
@@ -24,7 +26,7 @@ function VibrantBg({
 
   return (
     <img
-      className="vibrant-bg"
+      className={mobile ? "vibrant-bg-mobile" : "vibrant-bg"}
       src={albumsArray[currentAlbum].tracks[currentTrack].cover}
     ></img>
   );

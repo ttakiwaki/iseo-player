@@ -1,0 +1,32 @@
+.mlibrary {
+  padding: 0 15px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.mlibrary-grid {
+  display: grid;
+  height: 100%;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  row-gap: 20px;
+  column-gap: 15px;
+  align-content: start;
+  padding-top: 10px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  margin-bottom: 10px;
+}
+
+.mlibrary-grid.taller {
+  margin-bottom: 80px;
+}
+
+/* Chrome, Safari, Opera */
+.mlibrary-grid::-webkit-scrollbar {
+  display: none;
+}

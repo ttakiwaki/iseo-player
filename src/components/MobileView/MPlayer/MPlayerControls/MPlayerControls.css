@@ -1,0 +1,82 @@
+.mplayer-controls {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.mstate-controls {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.mstate-controls.small {
+  width: auto;
+  padding-left: 20px;
+}
+
+.mstate-playpause {
+  padding: 1px 13px;
+  border-radius: 15px;
+  border: 2px solid var(--btnOutline);
+  background-color: var(--btnColor);
+}
+
+.mplaypause-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.mmain-controls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 18px;
+}
+
+.mcontrol-icon.primary {
+  width: 40px;
+  height: 40px;
+  fill: var(--fontColor);
+}
+
+.mcontrol-icon.secondary {
+  width: 25px;
+  height: 25px;
+}
+
+.msmall-controls {
+  width: 17px;
+  height: 17px;
+}
+
+.mplayer-controls-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.mplayer-controls-footer button {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: var(--fontColor);
+  background-color: var(--buttonBorder);
+  border: 2px solid var(--buttonFill);
+  border-radius: 40px;
+  font-size: 14px;
+  height: 40px;
+  padding: 0 16px;
+  margin-top: 20px;
+  margin-right: 10px;
+}

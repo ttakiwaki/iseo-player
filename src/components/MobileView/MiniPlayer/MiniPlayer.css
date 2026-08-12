@@ -1,0 +1,66 @@
+.miniplayer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  background-color: var(--tabSide);
+  box-shadow:
+    0px 10px 25px -5px rgba(0, 0, 0, 0.25),
+    0px 4px 10px -2px rgba(0, 0, 0, 0.15);
+  padding: 10px 15px;
+  margin: 15px 15px 25px 15px;
+  border-radius: 35px;
+  display: flex;
+  flex-direction: row;
+}
+
+.miniplayer img {
+  width: 40px;
+  height: 40px;
+  border-radius: 7px;
+}
+
+.miniplayer-info {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.miniplayer-info p {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.miniplayer-info > p:first-child {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.miniplayer-info > p:last-child {
+  font-size: 10px;
+}
+
+.miniplayer-controls {
+  display: flex;
+  flex-direction: row;
+  gap: 13px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.minicontrol-icon.primary {
+  width: 30px;
+  height: 30px;
+  fill: var(--fontColor);
+}
+
+.minicontrol-icon.secondary {
+  width: 23px;
+  height: 23px;
+}

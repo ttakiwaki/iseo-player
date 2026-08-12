@@ -1,0 +1,135 @@
+.malbum-info {
+  padding: 0 15px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.close-album {
+  margin-top: 25px;
+  width: 30px;
+  height: 30px;
+}
+
+.malbum-info-content {
+  margin: 20px 0 0 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.malbum-info-content img {
+  width: 33%;
+  flex-shrink: 0;
+  border-radius: 15px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.malbum-info-text {
+  margin-top: 10px;
+  gap: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.malbum-info-text > p:first-child {
+  font-size: 12px;
+}
+
+.malbum-info-text > p:first-child span {
+  font-weight: lighter;
+}
+
+.malbum-info-text > p:nth-child(2) {
+  font-weight: bold;
+  font-size: 23px;
+
+  /* Line break to ... */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.malbum-info-text > p:last-child {
+  font-size: 15px;
+}
+
+.malbuminfo-songs {
+  padding: 5px 5px;
+  margin: 10px 10px 0 10px;
+  cursor: pointer;
+  flex: 1;
+  min-height: 0;
+  overflow-y: scroll;
+  /* Edge, Firefox, Internet Explorer... */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+/* Chrome, Safari, Opera */
+.malbuminfo-songs::-webkit-scrollbar {
+  display: none;
+}
+
+.malbuminfo-songs.taller {
+  margin: 10px 10px 70px 10px;
+}
+
+.malbuminfo-songs ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.malbuminfo-songs li {
+  padding: 8px 0;
+}
+
+.malbuminfo-song {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Track number */
+.malbuminfo-song > span:first-child {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Title + artist wrapper */
+.malbuminfo-song > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.malbuminfo-song > div > span:first-child {
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.malbuminfo-song > div > span:last-child {
+  font-size: 13px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Duration */
+.malbuminfo-song > span:last-child {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums lining-nums;
+}

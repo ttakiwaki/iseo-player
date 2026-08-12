@@ -1,0 +1,32 @@
+.malbum-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.malbum-tile img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.malbum-tile-title {
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow-x: scroll;
+  /* Edge, Firefox, Internet Explorer... */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Chrome, Safari, Opera */
+.malbum-tile-title::-webkit-scrollbar {
+  display: none;
+}
+
+.malbum-tile-artist {
+  font-size: 10px;
+}

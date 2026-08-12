@@ -1,0 +1,41 @@
+/*
+<div className="msettings-row">
+  {icon}
+  <div className="mrow-information">
+    <p>{title}</p>
+    <p>{description}</p>
+  </div>
+  {control}
+</div>
+*/
+
+.msettings-row {
+  margin-top: 25px;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  background-color: var(--interactSide);
+  border-radius: 15px;
+}
+
+.msettings-row > :last-child {
+  margin-left: auto;
+}
+
+.msettings-row > svg:first-child {
+  width: 30px;
+  height: 30px;
+}
+
+.mrow-information {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 18px;
+}
+
+.mrow-title {
+  font-weight: bold;
+}
