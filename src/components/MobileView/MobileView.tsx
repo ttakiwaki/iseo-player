@@ -21,8 +21,6 @@ interface MobileViewProps {
   setPlaying: (value: boolean) => void;
   looping: boolean;
   setLooping: (value: boolean) => void;
-  setVolume: (value: number) => void;
-  volume: number;
   lyrics: LyricsResults | null;
   lyricsOpen: boolean;
   setLyricsOpen: (value: boolean) => void;
@@ -51,8 +49,6 @@ function MobileView({
   setPlaying,
   looping,
   setLooping,
-  setVolume,
-  volume,
   lyrics,
   lyricsOpen,
   setLyricsOpen,
@@ -69,7 +65,6 @@ function MobileView({
 }: MobileViewProps) {
   const [albumOpen, setAlbumOpen] = useState(false);
   const [playerOpen, setPlayerOpen] = useState(false);
-  const [volOpen, setVolOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const [currentTime, setCurrentTime] = useState(0);
@@ -135,10 +130,8 @@ function MobileView({
             setTrack={setTrack}
             setAlbumsArray={setAlbumsArray}
             setPlaying={setPlaying}
-            looping={looping}
             setLooping={setLooping}
-            setVolume={setVolume}
-            volume={volume}
+            looping={looping}
             lyrics={lyrics}
             lyricsOpen={lyricsOpen}
             setLyricsOpen={setLyricsOpen}
@@ -146,8 +139,6 @@ function MobileView({
             shuffling={shuffling}
             setShuffling={setShuffling}
             originalTracksRef={originalTracksRef}
-            volOpen={volOpen}
-            setVolOpen={setVolOpen}
           ></MPlayer>
         )}
         {albumOpen && !playerOpen && (

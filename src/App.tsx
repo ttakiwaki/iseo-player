@@ -147,8 +147,6 @@ function App() {
           setPlaying={setPlaying}
           looping={looping}
           setLooping={setLooping}
-          setVolume={setVolume}
-          volume={volume}
           lyrics={lyrics}
           lyricsOpen={lyricsOpen}
           setLyricsOpen={setLyricsOpen}

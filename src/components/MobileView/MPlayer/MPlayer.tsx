@@ -1,10 +1,9 @@
 import "./MPlayer.css";
-import { ChevronDown, Volume2, MicVocal } from "lucide-react";
+import { ChevronDown, MicVocal } from "lucide-react";
 import type { Album, Track } from "../../../types";
 import type { LyricsResults } from "../../../assets/services/LyricService";
 import { useState } from "react";
 
-import Scrubber from "../../Scrubber/Scrubber";
 import MPlayerControls from "./MPlayerControls/MPlayerControls";
 import MPlayerLyrics from "./MPlayerLyrics/MPlayerLyrics";
 import icondark from "../../../assets/icons/icon-dark.svg";
@@ -23,8 +22,6 @@ interface MPlayerProps {
   setPlaying: (value: boolean) => void;
   looping: boolean;
   setLooping: (value: boolean) => void;
-  setVolume: (value: number) => void;
-  volume: number;
   lyrics: LyricsResults | null;
   lyricsOpen: boolean;
   setLyricsOpen: (value: boolean) => void;
@@ -32,8 +29,6 @@ interface MPlayerProps {
   shuffling: boolean;
   setShuffling: (value: boolean) => void;
   originalTracksRef: React.RefObject<Track[]>;
-  volOpen: boolean;
-  setVolOpen: (value: boolean) => void;
 }
 
 function MPlayer({
@@ -49,8 +44,6 @@ function MPlayer({
   setPlaying,
   looping,
   setLooping,
-  setVolume,
-  volume,
   lyrics,
   lyricsOpen,
   setLyricsOpen,
@@ -58,8 +51,6 @@ function MPlayer({
   shuffling,
   setShuffling,
   originalTracksRef,
-  volOpen,
-  setVolOpen,
 }: MPlayerProps) {
   const [sync, setSync] = useState<boolean>(true);
 
@@ -78,24 +69,6 @@ function MPlayer({
           }}
         />
         <div className="mplayer-header-controls">
-          <div className="mplayer-volume">
-            <div className={!volOpen ? "hidden" : "mvolumebar-container"}>
-              <Scrubber
-                value={volume * 100}
-                onChange={(percent) => {
-                  setVolume(percent / 100);
-                  if (audioRef.current) audioRef.current.volume = percent / 100;
-                }}
-                size={"large"}
-              ></Scrubber>
-            </div>
-            <Volume2
-              size={23}
-              onClick={() => {
-                setVolOpen(!volOpen);
-              }}
-            ></Volume2>
-          </div>
           <MicVocal
             size={23}
             onClick={() => {
