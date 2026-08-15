@@ -4,6 +4,21 @@ All notable changes to ISEO are documented in this file. Logs will start from Ca
 
 Format based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [v4.2.4 & v4.2.5] — ISEO UI Overhaul
+
+### ummm i lowk dont even know whats going on anymore... its fixed on production? just to be safe for future documentation, issues will be kept until a definite fix is found.
+
+### Added
+
+- Extra padding for the fix which should help? (padding-top: env(safe-area-inset-top)) should help with iOS safe area handling, and shouldn't affect other platforms, nor if it decides to break again and fallback to the hardset color.
+
+### Issues
+
+- iOS safe area handling on ISEO's mobile player UI.
+- Not tested on other platforms other than (iPhone 16)
+
+---
+
 ## [v4.2.3] — ISEO UI Overhaul
 
 ### Removed
