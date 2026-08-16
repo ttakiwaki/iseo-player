@@ -144,41 +144,6 @@ function usePlayerControls({
     }
   }
 
-  // Manage media session metadata and actions
-  useEffect(() => {
-    if (currentTrack !== null && currentAlbum !== null && audioRef.current) {
-      const track = albumsArray[currentAlbum]?.tracks[currentTrack];
-      if (!track) return;
-
-      if (audioRef.current.src !== track.url) {
-        audioRef.current.src = track.url;
-        audioRef.current.play().catch(() => {});
-        setPlaying(true);
-      }
-
-      document.title = `${albumsArray[currentAlbum].tracks[currentTrack].title} - iseo`;
-
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: albumsArray[currentAlbum].tracks[currentTrack].title,
-        artist: albumsArray[currentAlbum].tracks[currentTrack].artist,
-        album: albumsArray[currentAlbum].tracks[currentTrack].album,
-        artwork: [
-          {
-            src:
-              albumsArray[currentAlbum].tracks[currentTrack].cover ??
-              albumsArray[currentAlbum].cover ??
-              "",
-            sizes: "512x512",
-            type: "image/jpeg",
-          },
-        ],
-      });
-
-      navigator.mediaSession.setActionHandler("nexttrack", nextSong);
-      navigator.mediaSession.setActionHandler("previoustrack", prevSong);
-    }
-  }, [currentTrack, currentAlbum]);
-
   // Listens for spacebar press to pause
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {

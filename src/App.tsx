@@ -1,6 +1,7 @@
 import "./App.css";
 import DesktopView from "./components/DesktopView/DesktopView.tsx";
 import MobileView from "./components/MobileView/MobileView.tsx";
+import usePlayerControls from "./hooks/usePlayerControls.ts";
 
 import { useRef, useEffect, useState } from "react";
 import { GetCached } from "./assets/services/LyricService.ts";
@@ -18,12 +19,31 @@ function App() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState<boolean>(false);
   const [looping, setLooping] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
 
   const [shuffling, setShuffling] = useState(false);
   const originalTracksRef = useRef<Track[]>([]);
 
   const [lyrics, setLyrics] = useState<LyricsResults | null>(null);
   const [lyricsOpen, setLyricsOpen] = useState<boolean>(false);
+
+  const { nextSong, prevSong } = usePlayerControls({
+    currentTrack,
+    currentAlbum,
+    albumsArray,
+    playing,
+    setTrack,
+    setAlbumsArray,
+    setPlaying,
+    audioRef,
+    looping,
+    setLooping,
+    setCurrentTime,
+    currentTime,
+    shuffling,
+    setShuffling,
+    originalTracksRef,
+  });
 
   // Settings States
   const [isDark, setDark] = useState<boolean>(() => {
@@ -74,6 +94,41 @@ function App() {
 
     return () => audio.removeEventListener("ended", handleEnded);
   }, [currentAlbum, currentTrack, albumsArray]);
+
+  // Manage media session metadata and actions
+  useEffect(() => {
+    if (currentTrack !== null && currentAlbum !== null && audioRef.current) {
+      const track = albumsArray[currentAlbum]?.tracks[currentTrack];
+      if (!track) return;
+
+      if (audioRef.current.src !== track.url) {
+        audioRef.current.src = track.url;
+        audioRef.current.play().catch(() => {});
+        setPlaying(true);
+      }
+
+      document.title = `${albumsArray[currentAlbum].tracks[currentTrack].title} - iseo`;
+
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: albumsArray[currentAlbum].tracks[currentTrack].title,
+        artist: albumsArray[currentAlbum].tracks[currentTrack].artist,
+        album: albumsArray[currentAlbum].tracks[currentTrack].album,
+        artwork: [
+          {
+            src:
+              albumsArray[currentAlbum].tracks[currentTrack].cover ??
+              albumsArray[currentAlbum].cover ??
+              "",
+            sizes: "512x512",
+            type: "image/jpeg",
+          },
+        ],
+      });
+
+      navigator.mediaSession.setActionHandler("nexttrack", nextSong);
+      navigator.mediaSession.setActionHandler("previoustrack", prevSong);
+    }
+  }, [currentTrack, currentAlbum]);
 
   useEffect(() => {
     // Lyric Fetch
