@@ -85,7 +85,7 @@ function App() {
       ) {
         const nextTrack = currentTrack + 1;
         if (nextTrack < albumsArray[currentAlbum].tracks.length) {
-          setTrack(nextTrack);
+          nextSong();
         }
       }
     }
@@ -95,17 +95,18 @@ function App() {
     return () => audio.removeEventListener("ended", handleEnded);
   }, [currentAlbum, currentTrack, albumsArray]);
 
+  const nextSongRef = useRef(nextSong);
+  const prevSongRef = useRef(prevSong);
+  useEffect(() => {
+    nextSongRef.current = nextSong;
+    prevSongRef.current = prevSong;
+  }, [nextSong, prevSong]);
+
   // Manage media session metadata and actions
   useEffect(() => {
     if (currentTrack !== null && currentAlbum !== null && audioRef.current) {
       const track = albumsArray[currentAlbum]?.tracks[currentTrack];
       if (!track) return;
-
-      if (audioRef.current.src !== track.url) {
-        audioRef.current.src = track.url;
-        audioRef.current.play().catch(() => {});
-        setPlaying(true);
-      }
 
       document.title = `${albumsArray[currentAlbum].tracks[currentTrack].title} - iseo`;
 
@@ -125,8 +126,11 @@ function App() {
         ],
       });
 
-      navigator.mediaSession.setActionHandler("nexttrack", nextSong);
-      navigator.mediaSession.setActionHandler("previoustrack", prevSong);
+      navigator.mediaSession.setActionHandler("nexttrack", nextSongRef.current);
+      navigator.mediaSession.setActionHandler(
+        "previoustrack",
+        prevSongRef.current,
+      );
     }
   }, [currentTrack, currentAlbum]);
 
