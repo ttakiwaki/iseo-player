@@ -47,7 +47,13 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background: var(--tabSide);
   overscroll-behavior: none;
   height: 100vh;
+}
+
+@media (display-mode: standalone) {
+  html,
+  body {
+    background: var(--tabSide);
+  }
 }
