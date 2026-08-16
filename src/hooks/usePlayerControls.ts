@@ -53,9 +53,21 @@ function usePlayerControls({
 
   function nextSong() {
     if (currentAlbum === null || currentTrack === null) return;
+
     const nextTrack = currentTrack + 1;
-    if (nextTrack < albumsArray[currentAlbum].tracks.length) {
+    const currentTracks = albumsArray[currentAlbum]?.tracks;
+
+    if (currentTracks && nextTrack < currentTracks.length) {
+      const nextTrackObj = currentTracks[nextTrack];
+
+      // Play audio directly (bypasses background JS throttling)
+      if (audioRef.current) {
+        audioRef.current.src = nextTrackObj.url;
+        audioRef.current.play().catch(() => {});
+      }
+
       setTrack(nextTrack);
+      setPlaying(true);
     }
   }
 
@@ -67,12 +79,19 @@ function usePlayerControls({
         audioRef.current.currentTime = 0;
       }
     } else {
-      const nextTrack = currentTrack - 1;
-      if (
-        nextTrack >= 0 &&
-        nextTrack < albumsArray[currentAlbum].tracks.length
-      ) {
-        setTrack(nextTrack);
+      const prevTrack = currentTrack - 1;
+      const currentTracks = albumsArray[currentAlbum]?.tracks;
+
+      if (currentTracks && prevTrack >= 0) {
+        const prevTrackObj = currentTracks[prevTrack];
+
+        if (audioRef.current) {
+          audioRef.current.src = prevTrackObj.url;
+          audioRef.current.play().catch(() => {});
+        }
+
+        setTrack(prevTrack);
+        setPlaying(true);
       }
     }
   }
@@ -124,6 +143,41 @@ function usePlayerControls({
       );
     }
   }
+
+  // Manage media session metadata and actions
+  useEffect(() => {
+    if (currentTrack !== null && currentAlbum !== null && audioRef.current) {
+      const track = albumsArray[currentAlbum]?.tracks[currentTrack];
+      if (!track) return;
+
+      if (audioRef.current.src !== track.url) {
+        audioRef.current.src = track.url;
+        audioRef.current.play().catch(() => {});
+        setPlaying(true);
+      }
+
+      document.title = `${albumsArray[currentAlbum].tracks[currentTrack].title} - iseo`;
+
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: albumsArray[currentAlbum].tracks[currentTrack].title,
+        artist: albumsArray[currentAlbum].tracks[currentTrack].artist,
+        album: albumsArray[currentAlbum].tracks[currentTrack].album,
+        artwork: [
+          {
+            src:
+              albumsArray[currentAlbum].tracks[currentTrack].cover ??
+              albumsArray[currentAlbum].cover ??
+              "",
+            sizes: "512x512",
+            type: "image/jpeg",
+          },
+        ],
+      });
+
+      navigator.mediaSession.setActionHandler("nexttrack", nextSong);
+      navigator.mediaSession.setActionHandler("previoustrack", prevSong);
+    }
+  }, [currentTrack, currentAlbum]);
 
   // Listens for spacebar press to pause
   useEffect(() => {

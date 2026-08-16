@@ -51,9 +51,6 @@ body {
   height: 100vh;
 }
 
-@media (display-mode: standalone) {
-  html,
-  body {
-    background: var(--tabSide);
-  }
+body.is-mobile {
+  background: var(--tabSide);
 }

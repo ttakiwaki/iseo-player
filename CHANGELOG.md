@@ -4,6 +4,19 @@ All notable changes to ISEO are documented in this file. Logs will start from Ca
 
 Format based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [v4.2.6] — ISEO UI Overhaul
+
+### Fixed
+
+- Desktop mode also recieving the background color from the tab side which was meant for a mobile only fix.
+
+### Issues
+
+- iOS safe area handling on ISEO's mobile player UI.
+- Not tested on other platforms other than (iPhone 16)
+
+---
+
 ## [v4.2.4 & v4.2.5] — ISEO UI Overhaul
 
 ### ummm i lowk dont even know whats going on anymore... its fixed on production? just to be safe for future documentation, issues will be kept until a definite fix is found.

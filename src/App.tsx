@@ -76,31 +76,6 @@ function App() {
   }, [currentAlbum, currentTrack, albumsArray]);
 
   useEffect(() => {
-    if (currentTrack !== null && currentAlbum !== null && audioRef.current) {
-      audioRef.current.src = albumsArray[currentAlbum].tracks[currentTrack].url;
-      audioRef.current.play().catch(() => {});
-      setPlaying(true);
-      document.title = `${albumsArray[currentAlbum].tracks[currentTrack].title} - iseo`;
-
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: albumsArray[currentAlbum].tracks[currentTrack].title,
-        artist: albumsArray[currentAlbum].tracks[currentTrack].artist,
-        album: albumsArray[currentAlbum].tracks[currentTrack].album,
-        artwork: [
-          {
-            src:
-              albumsArray[currentAlbum].tracks[currentTrack].cover ??
-              albumsArray[currentAlbum].cover ??
-              "",
-            sizes: "512x512",
-            type: "image/jpeg",
-          },
-        ],
-      });
-    }
-  }, [currentTrack, currentAlbum]);
-
-  useEffect(() => {
     // Lyric Fetch
     if (currentAlbum !== null && currentTrack !== null && lyricsOpen) {
       const track = albumsArray[currentAlbum].tracks[currentTrack];
@@ -130,7 +105,8 @@ function App() {
   }, [currentTrack, currentAlbum, vibranceEnabled]);
 
   // Display Mobile or Desktop
-  const userMobile = window.matchMedia("(max-width: 768px)").matches;
+  const userMobile = /iPhone|iPod|Android/i.test(navigator.userAgent);
+  document.body.classList.toggle("is-mobile", userMobile);
 
   return (
     <div id="app">
