@@ -4,6 +4,19 @@ All notable changes to ISEO are documented in this file. Logs will start from Ca
 
 Format based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [v4.2.10] — ISEO UI Overhaul
+
+### Fixed
+
+- Songs not moving to the next/previous track while using phone simultaneously. (Mobile) im trying my best...
+
+### Issues
+
+- iOS safe area handling on ISEO's mobile player UI.
+- Not tested on other platforms other than (iPhone 16)
+
+---
+
 ## [v4.2.9] — ISEO UI Overhaul
 
 ### Fixed

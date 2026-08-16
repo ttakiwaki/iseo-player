@@ -102,37 +102,45 @@ function App() {
     prevSongRef.current = prevSong;
   }, [nextSong, prevSong]);
 
-  // Manage media session metadata and actions
   useEffect(() => {
-    if (currentTrack !== null && currentAlbum !== null && audioRef.current) {
-      const track = albumsArray[currentAlbum]?.tracks[currentTrack];
-      if (!track) return;
+    if (currentTrack === null || currentAlbum === null || !audioRef.current)
+      return;
 
-      document.title = `${albumsArray[currentAlbum].tracks[currentTrack].title} - iseo`;
+    const track = albumsArray[currentAlbum]?.tracks[currentTrack];
+    if (!track) return;
 
+    if (audioRef.current.src !== track.url) {
+      audioRef.current.src = track.url;
+      audioRef.current
+        .play()
+        .catch((err) => console.error("Playback error:", err));
+      setPlaying(true);
+    }
+
+    document.title = `${track.title} - iseo`;
+
+    if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
-        title: albumsArray[currentAlbum].tracks[currentTrack].title,
-        artist: albumsArray[currentAlbum].tracks[currentTrack].artist,
-        album: albumsArray[currentAlbum].tracks[currentTrack].album,
+        title: track.title,
+        artist: track.artist ?? "",
+        album: track.album ?? albumsArray[currentAlbum]?.title ?? "",
         artwork: [
           {
-            src:
-              albumsArray[currentAlbum].tracks[currentTrack].cover ??
-              albumsArray[currentAlbum].cover ??
-              "",
+            src: track.cover ?? albumsArray[currentAlbum]?.cover ?? "",
             sizes: "512x512",
             type: "image/jpeg",
           },
         ],
       });
 
-      navigator.mediaSession.setActionHandler("nexttrack", nextSongRef.current);
-      navigator.mediaSession.setActionHandler(
-        "previoustrack",
-        prevSongRef.current,
+      navigator.mediaSession.setActionHandler("nexttrack", () =>
+        nextSongRef.current(),
+      );
+      navigator.mediaSession.setActionHandler("previoustrack", () =>
+        prevSongRef.current(),
       );
     }
-  }, [currentTrack, currentAlbum]);
+  }, [currentTrack, currentAlbum, albumsArray]);
 
   useEffect(() => {
     // Lyric Fetch
