@@ -45,7 +45,9 @@ function usePlayerControls({
         audioRef.current.pause();
         setPlaying(false);
       } else {
-        audioRef.current.play();
+        audioRef.current
+          .play()
+          .catch((err) => console.error("Play error:", err));
         setPlaying(true);
       }
     }
@@ -54,67 +56,70 @@ function usePlayerControls({
   function nextSong() {
     if (currentAlbum === null || currentTrack === null) return;
 
-    const nextTrack = currentTrack + 1;
     const currentTracks = albumsArray[currentAlbum]?.tracks;
+    if (!currentTracks) return;
 
-    if (currentTracks && nextTrack < currentTracks.length) {
-      const nextTrackObj = currentTracks[nextTrack];
+    const nextTrackIndex = currentTrack + 1;
 
-      // Play audio directly (bypasses background JS throttling)
+    if (nextTrackIndex < currentTracks.length) {
+      const nextTrackObj = currentTracks[nextTrackIndex];
+
       if (audioRef.current) {
+        // Synchronous audio mutation keeps background session alive on iOS
         audioRef.current.src = nextTrackObj.url;
-        audioRef.current.play().catch(() => {});
+        audioRef.current
+          .play()
+          .catch((err) => console.error("Next song playback error:", err));
       }
-
-      setTrack(nextTrack);
+      setTrack(nextTrackIndex);
       setPlaying(true);
     }
   }
 
   function prevSong() {
     if (currentAlbum === null || currentTrack === null) return;
-    if (currentTime >= 5) {
+
+    if (currentTime >= 5 && audioRef.current) {
+      audioRef.current.currentTime = 0;
       setCurrentTime(0);
+      return;
+    }
+
+    const prevTrackIndex = currentTrack - 1;
+    const currentTracks = albumsArray[currentAlbum]?.tracks;
+
+    if (currentTracks && prevTrackIndex >= 0) {
+      const prevTrackObj = currentTracks[prevTrackIndex];
+
       if (audioRef.current) {
-        audioRef.current.currentTime = 0;
+        audioRef.current.src = prevTrackObj.url;
+        audioRef.current
+          .play()
+          .catch((err) => console.error("Prev song playback error:", err));
       }
-    } else {
-      const prevTrack = currentTrack - 1;
-      const currentTracks = albumsArray[currentAlbum]?.tracks;
 
-      if (currentTracks && prevTrack >= 0) {
-        const prevTrackObj = currentTracks[prevTrack];
-
-        if (audioRef.current) {
-          audioRef.current.src = prevTrackObj.url;
-          audioRef.current.play().catch(() => {});
-        }
-
-        setTrack(prevTrack);
-        setPlaying(true);
-      }
+      setTrack(prevTrackIndex);
+      setPlaying(true);
     }
   }
 
   function loopSong() {
-    if (!looping && currentTrack !== null && audioRef.current) {
-      audioRef.current.loop = true;
-      setLooping(true);
-    } else {
-      if (currentTrack !== null && audioRef.current) {
-        audioRef.current.loop = false;
-        setLooping(false);
-      }
+    if (audioRef.current) {
+      const nextLoopState = !looping;
+      audioRef.current.loop = nextLoopState;
+      setLooping(nextLoopState);
     }
   }
 
   function shuffleSong() {
     if (currentAlbum === null || currentTrack === null) return;
+
     if (!shuffling) {
       setShuffling(true);
       originalTracksRef.current = [...albumsArray[currentAlbum].tracks];
       const shuffledTracks = [...albumsArray[currentAlbum].tracks];
       previousAlbum.current = currentAlbum;
+
       for (let i = shuffledTracks.length - 1; i > 0; i--) {
         const nextTrack = Math.floor(Math.random() * (i + 1));
         [shuffledTracks[i], shuffledTracks[nextTrack]] = [
@@ -122,13 +127,17 @@ function usePlayerControls({
           shuffledTracks[i],
         ];
       }
+
       const updatedAlbums = [...albumsArray];
       updatedAlbums[currentAlbum].tracks = shuffledTracks;
       setAlbumsArray(updatedAlbums);
       setTrack(0);
+
       if (audioRef.current) {
         audioRef.current.src = shuffledTracks[0].url;
-        audioRef.current.play();
+        audioRef.current
+          .play()
+          .catch((err) => console.error("Shuffle play error:", err));
       }
     } else {
       setShuffling(false);
@@ -136,26 +145,27 @@ function usePlayerControls({
       const updatedAlbums = [...albumsArray];
       updatedAlbums[currentAlbum].tracks = originalTracksRef.current;
       setAlbumsArray(updatedAlbums);
-      setTrack(
-        albumsArray[currentAlbum].tracks.findIndex(
-          (i) => i.url === currentURL.current,
-        ),
+
+      const restoredIndex = originalTracksRef.current.findIndex(
+        (i) => i.url === currentURL.current,
       );
+      setTrack(restoredIndex !== -1 ? restoredIndex : 0);
     }
   }
 
-  // Listens for spacebar press to pause
+  // Keyboard shortcut listener
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === " ") {
+      // Prevent triggering if user is typing in an input element
+      if (
+        event.key === " " &&
+        !(
+          event.target instanceof HTMLInputElement ||
+          event.target instanceof HTMLTextAreaElement
+        )
+      ) {
         event.preventDefault();
-        if (playing) {
-          audioRef.current?.pause();
-          setPlaying(false);
-        } else {
-          audioRef.current?.play();
-          setPlaying(true);
-        }
+        handlePlayPause();
       }
     };
     window.addEventListener("keydown", handleKeyDown);

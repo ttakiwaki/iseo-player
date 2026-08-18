@@ -16,12 +16,12 @@ function App() {
   const [viewedAlbum, setViewedAlbum] = useState<number | null>(null);
   const [albumsArray, setAlbumsArray] = useState<Album[]>([]);
 
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState<boolean>(false);
-  const [looping, setLooping] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
+  const [looping, setLooping] = useState<boolean>(false);
+  const [currentTime, setCurrentTime] = useState<number>(0);
 
-  const [shuffling, setShuffling] = useState(false);
+  const [shuffling, setShuffling] = useState<boolean>(false);
   const originalTracksRef = useRef<Track[]>([]);
 
   const [lyrics, setLyrics] = useState<LyricsResults | null>(null);
@@ -56,12 +56,24 @@ function App() {
     return localStorage.getItem("username") ?? "";
   });
 
+  // Keep references to latest song navigation functions for media session and event listeners
+  const nextSongRef = useRef(nextSong);
+  const prevSongRef = useRef(prevSong);
+
   useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    nextSongRef.current = nextSong;
+    prevSongRef.current = prevSong;
+  }, [nextSong, prevSong]);
+
+  // Handle Mobile view detection safely in side effect
+  useEffect(() => {
+    const userMobile = /iPhone|iPod|Android/i.test(navigator.userAgent);
+    document.body.classList.toggle("is-mobile", userMobile);
+  }, []);
+
+  // Handle Dark mode toggle
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", isDark);
   }, [isDark]);
 
   const [volume, setVolume] = useState(0.5);
@@ -73,35 +85,33 @@ function App() {
     }
   }, []);
 
+  // CRITICAL FOR IOS: Native 'ended' listener that executes synchronously on track finish
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    function handleEnded() {
-      if (
-        currentTrack !== null &&
-        currentAlbum !== null &&
-        albumsArray !== null
-      ) {
-        const nextTrack = currentTrack + 1;
-        if (nextTrack < albumsArray[currentAlbum].tracks.length) {
-          nextSong();
-        }
-      }
-    }
+    const handleEnded = () => {
+      // Loop handles itself natively if audioRef.current.loop is true
+      if (audio.loop) return;
+
+      // Trigger next song transition directly
+      nextSongRef.current();
+    };
+
+    const handleTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
+    };
 
     audio.addEventListener("ended", handleEnded);
+    audio.addEventListener("timeupdate", handleTimeUpdate);
 
-    return () => audio.removeEventListener("ended", handleEnded);
-  }, [currentAlbum, currentTrack, albumsArray]);
+    return () => {
+      audio.removeEventListener("ended", handleEnded);
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+    };
+  }, []);
 
-  const nextSongRef = useRef(nextSong);
-  const prevSongRef = useRef(prevSong);
-  useEffect(() => {
-    nextSongRef.current = nextSong;
-    prevSongRef.current = prevSong;
-  }, [nextSong, prevSong]);
-
+  // Track & Album updates + MediaSession Configuration
   useEffect(() => {
     if (currentTrack === null || currentAlbum === null || !audioRef.current)
       return;
@@ -109,16 +119,18 @@ function App() {
     const track = albumsArray[currentAlbum]?.tracks[currentTrack];
     if (!track) return;
 
+    // Load track into audio element if not already set
     if (audioRef.current.src !== track.url) {
       audioRef.current.src = track.url;
       audioRef.current
         .play()
+        .then(() => setPlaying(true))
         .catch((err) => console.error("Playback error:", err));
-      setPlaying(true);
     }
 
     document.title = `${track.title} - iseo`;
 
+    // Configure Web Media Session API for iOS background controls
     if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: track.title,
@@ -133,17 +145,28 @@ function App() {
         ],
       });
 
-      navigator.mediaSession.setActionHandler("nexttrack", () =>
-        nextSongRef.current(),
-      );
-      navigator.mediaSession.setActionHandler("previoustrack", () =>
-        prevSongRef.current(),
-      );
+      navigator.mediaSession.setActionHandler("play", () => {
+        audioRef.current?.play();
+        setPlaying(true);
+      });
+
+      navigator.mediaSession.setActionHandler("pause", () => {
+        audioRef.current?.pause();
+        setPlaying(false);
+      });
+
+      navigator.mediaSession.setActionHandler("nexttrack", () => {
+        nextSongRef.current();
+      });
+
+      navigator.mediaSession.setActionHandler("previoustrack", () => {
+        prevSongRef.current();
+      });
     }
   }, [currentTrack, currentAlbum, albumsArray]);
 
+  // Lyric Fetch
   useEffect(() => {
-    // Lyric Fetch
     if (currentAlbum !== null && currentTrack !== null && lyricsOpen) {
       const track = albumsArray[currentAlbum].tracks[currentTrack];
       setLyrics(null);
@@ -154,11 +177,11 @@ function App() {
         track.metaDuration ?? 0,
       ).then((result) => {
         setLyrics(result);
-        console.log(result);
       });
     }
   }, [currentAlbum, currentTrack, lyricsOpen]);
 
+  // Vibrance / Palette calculation
   useEffect(() => {
     if (currentTrack !== null && currentAlbum !== null && vibranceEnabled) {
       document.documentElement.style.removeProperty("--paletteSelect");
@@ -171,13 +194,11 @@ function App() {
     }
   }, [currentTrack, currentAlbum, vibranceEnabled]);
 
-  // Display Mobile or Desktop
   const userMobile = /iPhone|iPod|Android/i.test(navigator.userAgent);
-  document.body.classList.toggle("is-mobile", userMobile);
 
   return (
     <div id="app">
-      <audio ref={audioRef}></audio>
+      <audio ref={audioRef} playsInline></audio>
       {userMobile ? (
         <MobileView
           albumsArray={albumsArray}
@@ -205,7 +226,7 @@ function App() {
           shuffling={shuffling}
           setShuffling={setShuffling}
           originalTracksRef={originalTracksRef}
-        ></MobileView>
+        />
       ) : (
         <DesktopView
           albumsArray={albumsArray}
@@ -235,7 +256,7 @@ function App() {
           shuffling={shuffling}
           setShuffling={setShuffling}
           originalTracksRef={originalTracksRef}
-        ></DesktopView>
+        />
       )}
     </div>
   );

@@ -14,6 +14,7 @@ function useUpload({ setAlbumsArray, albumsArray }: useUploadProps) {
     ".m4a",
     ".ogg",
     ".aac",
+    ".opus",
   ];
 
   function isAudioFile(filename: string): boolean {
